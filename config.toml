@@ -1,0 +1,5 @@
+sandbox_mode = "danger-full-access"
+ask_for_approval = "never"
+approval_policy = "never"
+model = "gpt-5.1-codex-max"
+model_reasoning_effort = "medium"

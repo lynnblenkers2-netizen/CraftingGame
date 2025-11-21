@@ -16,6 +16,7 @@ public class TopBarUI : MonoBehaviour
     [Header("Refs")]
     public ResourceStore store;
     public GameCalendar calendar;
+    public PlayerProgress playerProgress;
 
     [Header("Resource Slots (3 items or more)")]
     public List<ResourceSlot> resourceSlots = new(); // size 3, assign defs/icons/labels
@@ -32,17 +33,32 @@ public class TopBarUI : MonoBehaviour
     public string yearSuffix = " (Y{0})";
     public string seasonUppercase = "none"; // "upper","lower","none"
 
+    [Header("Progress UI")]
+    public Image xpFill;
+    public TextMeshProUGUI levelLabel;
+    public string levelFormat = "Lv {0}";
+
     [Header("Auto Build (optional)")]
     public bool autoBuildRows = true;
     public Transform resourcesGroupParent;
     public ResourceEntryUI resourceRowPrefab;
     public bool buildFromStoreList = false;
 
+    [Header("Producer Sockets (optional)")]
+    public bool autoBuildProducerSockets = true;
+    public Transform producerSocketsParent;
+    public ItemSlotUI producerSlotPrefab;
+    public int producerSocketCount = 3;
+    public TextMeshProUGUI producerTotalLabel;
+    public ProducerSocketsManager producerManager;
+    // Note: sockets are generated at runtime by instantiating `producerSlotPrefab`.
+
     readonly Dictionary<ResourceDefinition, ResourceEntryUI> rows = new Dictionary<ResourceDefinition, ResourceEntryUI>();
 
     System.Action dayChangedHandler;
     System.Action seasonChangedHandler;
     System.Action yearChangedHandler;
+    System.Action progressChangedHandler;
 
     void OnEnable()
     {
@@ -50,13 +66,16 @@ public class TopBarUI : MonoBehaviour
         if (store != null) store.OnChanged += OnResourceChanged;
         RefreshAllResources();
         HookCalendar(true);
+        HookProgress(true);
         RefreshCalendarUI(forceAll:true);
+        RefreshXPUI();
     }
 
     void OnDisable()
     {
         if (store != null) store.OnChanged -= OnResourceChanged;
         HookCalendar(false);
+        HookProgress(false);
     }
 
     void Update()
@@ -66,6 +85,21 @@ public class TopBarUI : MonoBehaviour
             float p = Mathf.Clamp01(calendar.dayProgress01);
             if (dayProgressFill)  dayProgressFill.fillAmount = p;
             if (dayProgressSlider) dayProgressSlider.value   = p;
+        }
+    }
+
+    void HookProgress(bool on)
+    {
+        if (playerProgress == null) return;
+        if (on)
+        {
+            progressChangedHandler ??= RefreshXPUI;
+            playerProgress.OnChanged += progressChangedHandler;
+        }
+        else
+        {
+            if (progressChangedHandler != null)
+                playerProgress.OnChanged -= progressChangedHandler;
         }
     }
 
@@ -121,6 +155,49 @@ public class TopBarUI : MonoBehaviour
             row.Bind(def, v.ToString("n0"));
             rows[def] = row;
         }
+
+        // Make sure layout groups update immediately so rows are spaced correctly on first frame
+        ForceResourceLayout();
+
+        // Build producer sockets if configured
+        if (autoBuildProducerSockets) BuildProducerSockets();
+    }
+
+    void BuildProducerSockets()
+    {
+        if (!producerSocketsParent || !producerSlotPrefab) return;
+
+        // Clear existing children and instantiate prefabs
+        for (int i = producerSocketsParent.childCount - 1; i >= 0; i--)
+            DestroyImmediate(producerSocketsParent.GetChild(i).gameObject);
+
+        var socketUIs = new ItemSlotUI[producerSocketCount];
+        for (int i = 0; i < producerSocketCount; i++)
+        {
+            var go = Instantiate(producerSlotPrefab.gameObject, producerSocketsParent);
+            go.name = "ProducerSocket_" + i;
+            var ui = go.GetComponent<ItemSlotUI>();
+            if (ui == null) { Debug.LogWarning("Producer slot prefab missing ItemSlotUI", go); Destroy(go); continue; }
+            socketUIs[i] = ui;
+        }
+
+        if (producerManager == null)
+        {
+            // attach a manager if none assigned
+            producerManager = producerSocketsParent.GetComponent<ProducerSocketsManager>();
+            if (producerManager == null) producerManager = producerSocketsParent.gameObject.AddComponent<ProducerSocketsManager>();
+        }
+
+        // Wire store and spirit resource if this TopBar has them in resourceSlots (try find def with id 'spirit')
+        if (producerManager.store == null) producerManager.store = store;
+        if (producerManager.spiritResource == null)
+        {
+            var spirit = resourceSlots.Find(s => s.def && s.def.id == "spirit")?.def;
+            producerManager.spiritResource = spirit;
+        }
+
+        producerManager.totalSpiritLabel = producerTotalLabel;
+        producerManager.AssignSockets(socketUIs, producerSocketCount);
     }
 
     void OnResourceChanged(ResourceDefinition def, int newValue)
@@ -179,6 +256,29 @@ public class TopBarUI : MonoBehaviour
         }
 
         // progress handled per-frame in Update() for smoothness
+    }
+
+    void RefreshXPUI()
+    {
+        if (playerProgress == null) return;
+        int prevReq = (playerProgress.Level <= 1) ? 0 : playerProgress.RequiredXPForLevel(playerProgress.Level);
+        int nextReq = playerProgress.RequiredXPForLevel(playerProgress.Level + 1);
+        float span = Mathf.Max(1f, nextReq - prevReq);
+        float p = Mathf.Clamp01((playerProgress.XP - prevReq) / span);
+
+        if (xpFill) xpFill.fillAmount = p;
+        if (levelLabel) levelLabel.text = string.Format(levelFormat, playerProgress.Level);
+    }
+
+    void ForceResourceLayout()
+    {
+        if (!resourcesGroupParent) return;
+        var rt = resourcesGroupParent as RectTransform;
+        if (!rt) rt = resourcesGroupParent.GetComponent<RectTransform>();
+        if (!rt) return;
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
     }
 
     // Simple debug actions (hook to buttons if you want)

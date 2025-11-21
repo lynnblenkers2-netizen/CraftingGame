@@ -17,6 +17,8 @@ public class TreeState : ScriptableObject
     public IReadOnlyList<string> Unlocked => unlockedIds;
     public IReadOnlyList<string> Queued   => queuedIds;
 
+    public void RaiseChanged() => OnChanged?.Invoke();
+
     public bool IsUnlocked(string id) => unlockedIds.Contains(id);
     public bool IsQueued(string id)   => queuedIds.Contains(id);
 

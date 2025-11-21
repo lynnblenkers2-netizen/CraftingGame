@@ -3,27 +3,67 @@ using UnityEngine;
 
 public class CraftingManager : MonoBehaviour
 {
-    [SerializeField] private Inventory inventory;
+    [SerializeField] private GlobalInventoryService inventoryService;
     [SerializeField] private CraftingGrid grid;
     [SerializeField] private List<ShapedRecipe> recipes = new();
+    [Header("Editor Notes")]
+    [TextArea(3,6)]
+    [SerializeField] public string editorNote = "This CraftingManager holds the recipes this manager exposes.\nIf you want a single, project-wide recipe list create one via Tools/Recipes/Build Recipe Database.\nDiscovered recipes are propagated into CraftingManager at runtime by RecipeCatalogService.";
+
+    // Expose the configured recipes so other services can seed from them
+    public IReadOnlyList<ShapedRecipe> Recipes => recipes;
+
+    /// <summary>
+    /// Add a recipe to this manager at runtime if not already present.
+    /// This allows discovered recipes to become craftable without modifying assets.
+    /// </summary>
+    public void AddRuntimeRecipe(ShapedRecipe r)
+    {
+        if (r == null) return;
+        if (recipes == null) recipes = new List<ShapedRecipe>();
+        if (!recipes.Contains(r))
+        {
+            recipes.Add(r);
+            Debug.Log($"CraftingManager.AddRuntimeRecipe: added recipe {r.name} (now {recipes.Count} recipes)");
+            // Try to refresh any UI bound to this manager
+            ForceUIRefresh();
+        }
+        else
+        {
+            Debug.Log($"CraftingManager.AddRuntimeRecipe: recipe {r.name} already present");
+        }
+    }
     
     // Optional: Direkte UI-Referenzen, um bei jeder Änderung hart zu refreshen
     // (zusätzlich zu den Events der Datenobjekte)
     [Header("UI (optional)")]
     [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private CraftingGridUI craftingGridUI;
+    [Header("XP Reward")]
+    [SerializeField] private int xpPerCraft = 1;
 
     enum CraftAttemptResult { Success, NoRecipe, InventoryFull, Error }
 
+    Inventory PlayerInventory => inventoryService != null ? inventoryService.playerInventory : null;
+    [Header("Player Stats")]
+    [SerializeField] private PlayerProgress playerProgress;
+
     private void OnEnable()
     {
-        if (inventory != null) inventory.OnChanged += ForceUIRefresh;
+        if (playerProgress == null) playerProgress = FindObjectOfType<PlayerProgress>();
+        var inv = PlayerInventory;
+        if (inv != null)
+        {
+            inv.OnChanged += ForceUIRefresh;
+            if (inventoryUI != null) inventoryUI.SetInventory(inv);
+        }
         if (grid != null) grid.OnChanged += ForceUIRefresh;
     }
 
     private void OnDisable()
     {
-        if (inventory != null) inventory.OnChanged -= ForceUIRefresh;
+        var inv = PlayerInventory;
+        if (inv != null) inv.OnChanged -= ForceUIRefresh;
         if (grid != null) grid.OnChanged -= ForceUIRefresh;
     }
 
@@ -74,7 +114,8 @@ public class CraftingManager : MonoBehaviour
     {
         craftedItem = null;
         craftedAmount = 0;
-        if (!inventory || !grid || recipes == null || recipes.Count == 0) return CraftAttemptResult.Error;
+        var inv = PlayerInventory;
+        if (inv == null || !grid || recipes == null || recipes.Count == 0) return CraftAttemptResult.Error;
 
         bool matchedRecipe = false;
         bool blockedBySpace = false;
@@ -89,7 +130,7 @@ public class CraftingManager : MonoBehaviour
 
             // 2) SIMULATION auf Kopien von Inventar + Grid
             // --- Inventar kopieren
-            var invSlots = inventory.Slots; // IReadOnly
+            var invSlots = inv.Slots;
             int invCount = invSlots.Count;
             var invItems = new Item[invCount];
             var invAmts  = new int[invCount];
@@ -167,7 +208,8 @@ public class CraftingManager : MonoBehaviour
                         existingSpace += Mathf.Max(0, r.outputItem.MaxStack - invAmts[i]);
             }
 
-            int remainAfterExisting = Mathf.Max(0, r.outputAmount - existingSpace);
+            int outputForSpace = ComputeCraftOutputForSpace(r.outputAmount);
+            int remainAfterExisting = Mathf.Max(0, outputForSpace - existingSpace);
             int newStacksNeeded = (r.outputItem && r.outputItem.MaxStack > 0)
                 ? Mathf.CeilToInt(remainAfterExisting / (float)r.outputItem.MaxStack)
                 : 0;
@@ -187,7 +229,7 @@ public class CraftingManager : MonoBehaviour
                 Item item = kv.Key;
                 int need  = kv.Value;
 
-                int tookInv = inventory.RemoveUpTo(item, need);
+                int tookInv = inv.RemoveUpTo(item, need);
                 int remaining = need - tookInv;
 
                 for (int i = 0; i < 16 && remaining > 0; i++)
@@ -213,7 +255,8 @@ public class CraftingManager : MonoBehaviour
             }
 
             // 3b) Output einsortieren
-            int remainder = inventory.Add(r.outputItem, r.outputAmount);
+            int craftedAmountThisRun = ApplyCraftingSkill(r.outputAmount);
+            int remainder = inv.Add(r.outputItem, craftedAmountThisRun);
             if (remainder > 0)
             {
                 Debug.LogWarning("[CraftingManager] Unerwartet kein Platz für Output nach erfolgreicher Simulation.");
@@ -221,16 +264,28 @@ public class CraftingManager : MonoBehaviour
                 return CraftAttemptResult.InventoryFull;
             }
 
-            // 3c) Output-Highlight im UI (erstes passendes Inventar-Slot blinken)
-            var invUI = FindObjectOfType<InventoryUI>();
-            if (invUI != null && invUI.Slots != null)
+            // 3c) Output-Highlight im UI (erstes passendes Inventar-Slot blinken) – nur auf UIs, die dieses Inventar nutzen
+            InventoryUI targetUI = inventoryUI;
+            if (targetUI == null)
             {
-                for (int i = 0; i < inventory.Slots.Count; i++)
+                var all = FindObjectsOfType<InventoryUI>(true);
+                foreach (var ui in all)
                 {
-                    var st = inventory.GetSlot(i);
+                    if (ui != null && ui.CurrentInventory == inv)
+                    {
+                        targetUI = ui;
+                        break;
+                    }
+                }
+            }
+            if (targetUI != null && targetUI.Slots != null && targetUI.Slots.Length > 0)
+            {
+                for (int i = 0; i < inv.Slots.Count; i++)
+                {
+                    var st = inv.GetSlot(i);
                     if (!st.IsEmpty && st.Item == r.outputItem)
                     {
-                        var slotUI = (i >= 0 && i < invUI.Slots.Length) ? invUI.Slots[i] : null;
+                        var slotUI = (i >= 0 && i < targetUI.Slots.Length) ? targetUI.Slots[i] : null;
                         if (slotUI != null)
                         {
                             var flash = slotUI.gameObject.GetComponent<SlotHighlightFlash>();
@@ -245,7 +300,9 @@ public class CraftingManager : MonoBehaviour
             // 3d) UI refresh (Inventory.Add feuert OnChanged; Grid manuell)
             grid.RaiseChanged();
             craftedItem = r.outputItem;
-            craftedAmount = r.outputAmount;
+            craftedAmount = craftedAmountThisRun;
+            if (xpPerCraft > 0 && playerProgress != null)
+                playerProgress.GrantXP(xpPerCraft);
             return CraftAttemptResult.Success;
 
             // label für "continue outer foreach"
@@ -281,5 +338,31 @@ public class CraftingManager : MonoBehaviour
             }
         }
         return true;
+    }
+
+    // ---- Skill helpers (player-wide crafting bonuses) ----
+    int ComputeCraftOutputForSpace(int baseAmount)
+    {
+        GetCraftingBonuses(out var chance, out var multiplier);
+        float potentialMultiplier = Mathf.Max(1f, multiplier);
+        return Mathf.RoundToInt(baseAmount * potentialMultiplier);
+    }
+
+    int ApplyCraftingSkill(int baseAmount)
+    {
+        GetCraftingBonuses(out var chance, out var multiplier);
+        if (chance <= 0f || multiplier <= 1f) return baseAmount;
+
+        return (UnityEngine.Random.value < chance)
+            ? Mathf.RoundToInt(baseAmount * multiplier)
+            : baseAmount;
+    }
+
+    void GetCraftingBonuses(out float chance, out float multiplier)
+    {
+        chance = 0f;
+        multiplier = 1f;
+        if (playerProgress == null) return;
+        playerProgress.GetCraftingBonuses(out chance, out multiplier);
     }
 }

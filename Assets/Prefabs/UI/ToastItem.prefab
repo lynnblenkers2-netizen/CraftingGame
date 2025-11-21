@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 3459339257566744352}
   - component: {fileID: -8628639337625474717}
   - component: {fileID: 5380806215873071595}
+  - component: {fileID: 9124796346802715569}
   m_Layer: 5
   m_Name: ToastItem
   m_TagString: Untagged
@@ -269,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48479c0c1349a574392b80c027240d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cg: {fileID: 0}
+  cg: {fileID: 9124796346802715569}
   rt: {fileID: 6070810267952039217}
   background: {fileID: 1012456648504775112}
   title: {fileID: 4817168458454651508}
@@ -328,6 +329,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!225 &9124796346802715569
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2634434622967300414}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5095473554193467104
 GameObject:
   m_ObjectHideFlags: 0

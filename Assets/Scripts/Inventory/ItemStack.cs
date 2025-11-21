@@ -12,5 +12,7 @@ public class ItemStack
     public ItemStack() { }
     public ItemStack(Item item, int amount) { Item = item; Amount = amount; }
 
+    public static ItemStack Empty() => new ItemStack();
+
     public void Clear() { Item = null; Amount = 0; }
 }

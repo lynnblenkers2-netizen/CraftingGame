@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fbdf1527ce745baae3a7ab0b78d0c50, type: 3}
+  m_Name: ActorTaskCatalog
+  m_EditorClassIdentifier: 
+  forageAreas:
+  - {fileID: 11400000, guid: ad46d4f4c7d76c64f879cc7d34a4204d, type: 2}
+  - {fileID: 11400000, guid: 7a96e10b59efe334db3ccc01828b312f, type: 2}
+  sellRoutes:
+  - {fileID: 11400000, guid: 1f03547655ba69b44bc5402e03827c7f, type: 2}
+  researchDomains:
+  - {fileID: 11400000, guid: 366a46310ff211c4883add1224017c02, type: 2}
+  - {fileID: 11400000, guid: 69e8b5530a4e38642ac9f1fadb8f3658, type: 2}
+  - {fileID: 11400000, guid: 91bd8041830c166409e0e6df37adcc52, type: 2}
+  craftPlans:
+  - {fileID: 11400000, guid: 4f9fe49b3f17e41439859c131013905c, type: 2}
+  tavernVisits:
+  - {fileID: 11400000, guid: 5040893f59e526e458a6a76d8081d88a, type: 2}

@@ -248,13 +248,13 @@
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Window\TimelineWindow_PlaybackControls.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\treeview\Drawers\InfiniteTrackDrawer.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Manipulators\Trim\TrimItemModeRipple.cs" />
-    <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Window\TimelineWindow_HeaderGui.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Animation\AnimationClipCurveCache.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Window\ViewModel\ScriptableObjectViewPrefs.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Extensions\AnimationTrackExtensions.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Utilities\AnimatedParameterCache.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Manipulators\EditModeInputHandler.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\inspectors\ClipInspector\ClipInspectorSelectionInfo.cs" />
+    <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Window\TimelineWindow_HeaderGui.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Window\TimelineWindow_StateChange.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\Utilities\FrameRateDisplayUtility.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@6b9e48457ddb\Editor\CustomEditors\ClipEditor.cs" />

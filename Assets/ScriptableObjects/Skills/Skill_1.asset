@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1350e2fe522eb54dbdb72f5a9acaae8, type: 3}
+  m_Name: Skill_1
+  m_EditorClassIdentifier: 
+  id: skill1
+  displayName: Besser Craften
+  description: "Erh\xF6ht die Chance auf doppelten Output beim Craften"
+  icon: {fileID: 21300000, guid: 4579304ceb788b640b9e0deab31061c9, type: 3}
+  cost: 1
+  prerequisites: []
+  canvasPosition: {x: 0, y: -70}
+  effect: 1
+  effectChance: 0.2
+  effectMultiplier: 2

@@ -109,11 +109,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.CollabProxy.Editor", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.VisualScripting.Shared.Editor", "Unity.VisualScripting.Shared.Editor.csproj", "{8C2E735C-AC2A-EF1B-8436-DEA74E2C6439}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{CBCE2508-4C99-64A5-8981-85F40D6A98AC}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.PlasticSCM.Editor.Entities", "Unity.PlasticSCM.Editor.Entities.csproj", "{816F63FC-1583-ACB9-76F8-2F03C1F49D36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Collections.Editor", "Unity.Collections.Editor.csproj", "{404CE545-7876-FA4B-B943-FD194DCC687B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{CBCE2508-4C99-64A5-8981-85F40D6A98AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -337,6 +337,10 @@ Global
 		{8C2E735C-AC2A-EF1B-8436-DEA74E2C6439}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C2E735C-AC2A-EF1B-8436-DEA74E2C6439}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C2E735C-AC2A-EF1B-8436-DEA74E2C6439}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBCE2508-4C99-64A5-8981-85F40D6A98AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBCE2508-4C99-64A5-8981-85F40D6A98AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBCE2508-4C99-64A5-8981-85F40D6A98AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBCE2508-4C99-64A5-8981-85F40D6A98AC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{816F63FC-1583-ACB9-76F8-2F03C1F49D36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{816F63FC-1583-ACB9-76F8-2F03C1F49D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{816F63FC-1583-ACB9-76F8-2F03C1F49D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -345,10 +349,6 @@ Global
 		{404CE545-7876-FA4B-B943-FD194DCC687B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{404CE545-7876-FA4B-B943-FD194DCC687B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{404CE545-7876-FA4B-B943-FD194DCC687B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CBCE2508-4C99-64A5-8981-85F40D6A98AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CBCE2508-4C99-64A5-8981-85F40D6A98AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CBCE2508-4C99-64A5-8981-85F40D6A98AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CBCE2508-4C99-64A5-8981-85F40D6A98AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

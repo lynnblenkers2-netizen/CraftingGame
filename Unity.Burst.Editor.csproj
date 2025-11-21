@@ -62,9 +62,9 @@
     <Compile Include="Library\PackageCache\com.unity.burst@f7a407abf4d5\Editor\BurstAotCompiler.cs" />
     <Compile Include="Library\PackageCache\com.unity.burst@f7a407abf4d5\Editor\BurstLoader.cs" />
     <Compile Include="Library\PackageCache\com.unity.burst@f7a407abf4d5\Editor\LabeledPopup.cs" />
-    <Compile Include="Library\PackageCache\com.unity.burst@f7a407abf4d5\Editor\BurstDisassembler.Core.cs" />
     <Compile Include="Library\PackageCache\com.unity.burst@f7a407abf4d5\Editor\BurstDisassembler.cs" />
     <Compile Include="Library\PackageCache\com.unity.burst@f7a407abf4d5\Editor\BurstDisassembler.Core.x86.info.cs" />
+    <Compile Include="Library\PackageCache\com.unity.burst@f7a407abf4d5\Editor\BurstDisassembler.Core.cs" />
     <Compile Include="Library\PackageCache\com.unity.burst@f7a407abf4d5\Editor\BurstMath.cs" />
     <Compile Include="Library\PackageCache\com.unity.burst@f7a407abf4d5\Editor\BurstMenu.cs" />
   </ItemGroup>

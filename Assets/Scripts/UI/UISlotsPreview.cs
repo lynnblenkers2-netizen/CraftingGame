@@ -14,7 +14,7 @@ public class UISlotsPreview : MonoBehaviour
     public GameObject slotPrefab;       // dein Slot-Prefab
     public CountMode countMode = CountMode.Fixed;
     public int fixedCount = 16;         // z.B. 16 fürs Crafting
-    public Inventory inventorySource;   // nur für FromInventoryCapacity
+    public GlobalInventoryService inventoryService;   // nur für FromInventoryCapacity
 
     [Header("Preview")]
     public bool showPreviewInEditMode = true;
@@ -82,8 +82,8 @@ public class UISlotsPreview : MonoBehaviour
     {
         if (!slotParent || !slotPrefab) return;
 
-        int want = (countMode == CountMode.FromInventoryCapacity && inventorySource)
-                 ? Mathf.Max(0, inventorySource.capacity)
+        int want = (countMode == CountMode.FromInventoryCapacity && inventoryService != null)
+                 ? Mathf.Max(0, inventoryService.startingCapacity)
                  : Mathf.Max(0, fixedCount);
 
         int have = CountPreviewChildren();

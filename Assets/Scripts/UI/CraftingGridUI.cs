@@ -38,11 +38,7 @@ public void Build()
         var ui = go.GetComponent<ItemSlotUI>();
         if (ui == null) { Debug.LogError("[CraftingGridUI] slotPrefab hat kein ItemSlotUI!", slotPrefab); Destroy(go); continue; }
 
-        ui.owner = ItemSlotUI.OwnerType.Crafting;
-        ui.index = i;
-        ui.craftingGrid = grid;
-
-        ui.Init(); // statt Refresh()
+        ui.Init(grid, i);
         slots[i] = ui;
     }
 }

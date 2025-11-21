@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2556849124455473278}
   - component: {fileID: 3133361397206379845}
   - component: {fileID: 367061735753709140}
+  - component: {fileID: 531234567890123456}
   - component: {fileID: 446580233172345987}
   m_Layer: 5
   m_Name: Slot
@@ -42,7 +43,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 204.72461, y: 128.03365}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 72, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7378519835455766388
@@ -109,7 +110,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: 0
   index: 0
-  inventory: {fileID: 0}
   craftingGrid: {fileID: 0}
   iconImage: {fileID: 5224810206096817885}
   countText: {fileID: 0}
@@ -148,6 +148,19 @@ MonoBehaviour:
   tmp: {fileID: 1127978929383299325}
   popScale: 1.18
   popTime: 0.08
+--- !u!114 &531234567890123456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72376884507152365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13d3beae1456f9a4fa87a3e86c323f38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showDelay: 0.12
 --- !u!114 &446580233172345987
 MonoBehaviour:
   m_ObjectHideFlags: 0

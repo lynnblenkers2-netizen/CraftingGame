@@ -1,44 +1,91 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class InventoryUI : MonoBehaviour
 {
-    [Header("References")]
-    public Inventory inventory;
-    public GameObject slotPrefab;
-    public Transform slotParent;     // <- auf 'Content' zeigen
-    public ScrollRect scrollRect;    // <- optional zuweisen (InventoryScrollView)
+    [Header("Wiring")]
+    [System.NonSerialized]
+    public Inventory inventory;          // wird via SetInventory oder autoService gesetzt
+    [SerializeField] GlobalInventoryService autoInventoryService;
+    public Transform slotParent;         // -> BackpackGrid
+    public GameObject slotPrefab;        // -> Slot prefab mit ItemSlotUI
 
-    private ItemSlotUI[] slots;
+    [Header("Slot Identity")]
+    public ItemSlotUI.OwnerType ownerType = ItemSlotUI.OwnerType.Inventory;
 
-    private void Start()
+    ItemSlotUI[] slots;
+    CanvasGroup interactionCg;
+    public System.Action<InventoryUI, Inventory> OnInventoryBound;
+    public Inventory CurrentInventory => inventory;
+
+    void Awake()
     {
-        Build();
-
-        if (inventory != null)
-            inventory.OnChanged += RefreshAll;
-        else
-            Debug.LogError("[InventoryUI] 'inventory' ist nicht zugewiesen.", this);
+        TryAutoBind();
+        interactionCg = GetComponent<CanvasGroup>();
     }
 
-    private void OnDestroy()
+    void OnEnable()
+    {
+        TryAutoBind();
+        if (inventory != null) inventory.OnChanged += RefreshAll;
+        if (slots == null || slots.Length == 0)
+        {
+            Build();
+        }
+    }
+
+    void OnDisable()
     {
         if (inventory != null)
+        {
             inventory.OnChanged -= RefreshAll;
+        }
+    }
+
+    public void SetInventory(Inventory newInv)
+    {
+        if (inventory == newInv) return;
+        if (inventory != null) inventory.OnChanged -= RefreshAll;
+        inventory = newInv;
+        if (inventory != null) inventory.OnChanged += RefreshAll;
+        Build();
+        PropagateInventoryToEmptyStates();
+        OnInventoryBound?.Invoke(this, inventory);
+    }
+
+    public void SetAutoInventoryService(GlobalInventoryService service)
+    {
+        autoInventoryService = service;
+        TryAutoBind();
+    }
+
+    void TryAutoBind()
+    {
+        if (inventory != null) return;
+        if (autoInventoryService != null && autoInventoryService.playerInventory != null)
+        {
+            SetInventory(autoInventoryService.playerInventory);
+        }
+    }
+
+    public void SetInteractable(bool interactable)
+    {
+        if (interactionCg == null) interactionCg = gameObject.GetComponent<CanvasGroup>();
+        if (interactionCg == null) interactionCg = gameObject.AddComponent<CanvasGroup>();
+        interactionCg.interactable = interactable;
+        interactionCg.blocksRaycasts = interactable;
+        interactionCg.alpha = interactable ? 1f : 0.7f;
     }
 
     public void Build()
     {
-        if (inventory == null || slotPrefab == null || slotParent == null)
+        if (!slotParent || !slotPrefab || inventory == null || inventory.Slots == null)
         {
-            Debug.LogError("[InventoryUI] Missing refs.", this);
             return;
         }
 
-        // alte Kinder entfernen
         for (int i = slotParent.childCount - 1; i >= 0; i--)
-            DestroyImmediate(slotParent.GetChild(i).gameObject);
+            Destroy(slotParent.GetChild(i).gameObject);
 
         int count = inventory.Slots.Count;
         slots = new ItemSlotUI[count];
@@ -49,24 +96,16 @@ public class InventoryUI : MonoBehaviour
             var ui = go.GetComponent<ItemSlotUI>();
             if (!ui)
             {
-                Debug.LogError("[InventoryUI] slotPrefab hat kein ItemSlotUI!", slotPrefab);
+                Debug.LogWarning("[InventoryUI] slotPrefab missing ItemSlotUI component.", this);
                 Destroy(go);
                 continue;
             }
-
-            ui.owner = ItemSlotUI.OwnerType.Inventory;
-            ui.index = i;
-            ui.inventory = inventory;
-            ui.Init();
+            ui.Init(inventory, i, ownerType);
             slots[i] = ui;
         }
 
-        // Layout sofort durchrechnen, damit ScrollRect die richtige Höhe kennt
-        var rt = slotParent as RectTransform;
-        if (rt) LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
-
-        // Optional: nach Build oben anfangen
-        ScrollToTop();
+        ForceLayoutNow();
+        PropagateInventoryToEmptyStates();
     }
 
     public void RefreshAll()
@@ -75,53 +114,22 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < slots.Length; i++)
             if (slots[i] != null) slots[i].Refresh();
 
-        // Layout nach Mengenänderungen ggf. neu rechnen
+        ForceLayoutNow();
+    }
+
+    void ForceLayoutNow()
+    {
         var rt = slotParent as RectTransform;
         if (rt) LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
     }
 
-    // -------- Optional helpers --------
-    public void ScrollToTop()
-    {
-        if (scrollRect) scrollRect.verticalNormalizedPosition = 1f;
-    }
-    public void ScrollToBottom()
-    {
-        if (scrollRect) scrollRect.verticalNormalizedPosition = 0f;
-    }
-
-    /// <summary>Scrollt so, dass der Slot mit Index sichtbar wird (einfach, reihenbasiert).</summary>
-    public void ScrollToSlot(int index)
-    {
-        if (!scrollRect || slots == null || index < 0 || index >= slots.Length) return;
-
-        var grid = (slotParent as RectTransform)?.GetComponent<GridLayoutGroup>();
-        if (!grid) return;
-
-        int columns = (grid.constraint == GridLayoutGroup.Constraint.FixedColumnCount && grid.constraintCount > 0)
-            ? grid.constraintCount : 1;
-        int row = index / columns;
-
-        // Sichtbare rows schätzen:
-        var viewport = scrollRect.viewport ? scrollRect.viewport.rect.height : ((RectTransform)scrollRect.transform).rect.height;
-        float rowHeight = grid.cellSize.y + grid.spacing.y;
-        if (rowHeight <= 0) rowHeight = 1;
-
-        // Ziel-Offset im Content von oben aus
-        float targetY = row * rowHeight;
-
-        // Maximaler Scrollbereich
-        var contentRT = slotParent as RectTransform;
-        float contentHeight = contentRT.rect.height;
-        float viewHeight = viewport;
-
-        float maxScroll = Mathf.Max(0, contentHeight - viewHeight);
-        float clamped = Mathf.Clamp(targetY - 0.5f * (viewHeight - rowHeight), 0, maxScroll);
-
-        // Normalized: 1 = Top, 0 = Bottom
-        float normalized = (maxScroll <= 0) ? 1f : 1f - (clamped / maxScroll);
-        scrollRect.verticalNormalizedPosition = normalized;
-    }
-
+    public ItemSlotUI[] GetSlotUIs() => slots;
     public ItemSlotUI[] Slots => slots;
+
+    void PropagateInventoryToEmptyStates()
+    {
+        var states = GetComponentsInChildren<InventoryEmptyState>(true);
+        foreach (var state in states)
+            if (state) state.SetInventory(inventory);
+    }
 }

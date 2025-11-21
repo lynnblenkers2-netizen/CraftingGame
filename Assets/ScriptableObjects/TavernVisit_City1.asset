@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518679dcc01c2644eac3f8d8a9a17ae6, type: 3}
+  m_Name: TavernVisit_City1
+  m_EditorClassIdentifier: 
+  id: LocalTavern
+  displayName: Local Tavern
+  goldCost: 5
+  visitDays: 0.3
+  chanceForageLead: 0.25
+  chanceSellLead: 0.25
+  chanceResearchLead: 0.2
+  chanceNewActorOffer: 0.972
+  forageLeads:
+  - {fileID: 11400000, guid: 7a96e10b59efe334db3ccc01828b312f, type: 2}
+  sellLeads:
+  - {fileID: 11400000, guid: aff5af03edf2ad24ba3e71e61fe008e5, type: 2}
+  researchLeads:
+  - {fileID: 11400000, guid: 69e8b5530a4e38642ac9f1fadb8f3658, type: 2}
+  actorOffers:
+  - {fileID: 11400000, guid: 5dbe190466ef84646ba865eb2821b322, type: 2}
+  msgHeadingToTavern: Visiting tavern.
+  msgNotEnoughGold: Not enough gold for tavern ({0}g needed).
+  msgNoDiscovery: No useful rumors today.
+  msgFoundForage: 'Found new forage area: {0}.'
+  msgFoundSell: 'Found new sell route: {0}.'
+  msgFoundResearch: Met scholar about {0}.
+  msgActorOfferTitle: Tavern Hire
+  msgActorOfferBody: 'A drifter offers to join: {0}. Hire?'
+  msgActorOfferAccept: Hire
+  msgActorOfferDecline: Decline
+  msgActorHireCost: 'Hire cost: {0} gold (you have {1}).'
+  msgActorHireCostFree: 'Hire cost: free.'
+  msgActorHired: '{0} joined the crew.'
+  msgActorDeclined: Turned down a potential hire.
+  msgRosterFull: Roster is full.

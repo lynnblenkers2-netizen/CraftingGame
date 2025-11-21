@@ -23,7 +23,11 @@ public class ToastSystem : MonoBehaviour
     {
         if (I && I != this) { Destroy(gameObject); return; }
         I = this;
-        if (dontDestroyOnLoad) DontDestroyOnLoad(gameObject);
+        if (dontDestroyOnLoad)
+        {
+            if (transform.parent != null) transform.SetParent(null, worldPositionStays: false);
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     void Update()
@@ -84,6 +88,7 @@ public class ToastSystem : MonoBehaviour
     public static void Show(ToastType type, string title, string body=null, string key=null, float? showTime=null)
     {
         if (!I) { Debug.LogWarning("[Toast] No ToastSystem in scene."); return; }
+        Debug.Log($"[Toast] {type}: {title} {(string.IsNullOrEmpty(body) ? "" : $"| {body}")}");
         var req = new ToastRequest { type=type, title=title, body=body, key=key, showTime=showTime };
         I.Enqueue(req);
     }

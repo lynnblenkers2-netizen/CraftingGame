@@ -10,6 +10,9 @@ public struct Ingredient
 [CreateAssetMenu(menuName = "Crafting/Shaped Recipe (4x4)")]
 public class ShapedRecipe : ScriptableObject
 {
+    [Header("Metadata")]
+    [Tooltip("Optional display name shown in UIs. If empty, the asset name will be used.")]
+    public string displayName;
     [Tooltip("Muss 16 Elemente (4x4) enthalten. Leere Zellen = kein Item verlangt.")]
     public Ingredient[] pattern = new Ingredient[16];
 
