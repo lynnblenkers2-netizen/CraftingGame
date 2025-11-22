@@ -58,6 +58,7 @@ public class ProducerSocketsManager : MonoBehaviour
             if (sockets[i] != null)
             {
                 sockets[i].Init(socketsInventory, i, ItemSlotUI.OwnerType.Inventory);
+                sockets[i].onlyProducerItems = true;
             }
         }
 

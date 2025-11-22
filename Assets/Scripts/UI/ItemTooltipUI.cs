@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Reflection;
+using System.Text;
 
 // Lightweight tooltip manager for item hover details
 public class ItemTooltipUI : MonoBehaviour
@@ -200,9 +201,63 @@ public class ItemTooltipUI : MonoBehaviour
     {
         if (iconImage) iconImage.sprite = item.Icon;
         if (titleText) titleText.text = !string.IsNullOrEmpty(item.DisplayName) ? item.DisplayName : item.Id;
-        if (descriptionText) descriptionText.text = !string.IsNullOrEmpty(item.description) ? item.description : (amount > 0 ? amount.ToString() : string.Empty);
+        if (descriptionText)
+        {
+            string desc = null;
+            if (item.producer != null && !string.IsNullOrEmpty(item.producer.description))
+                desc = item.producer.description;
+            else if (!string.IsNullOrEmpty(item.description))
+                desc = item.description;
+            else if (amount > 0)
+                desc = amount.ToString();
+
+            string bonusText = BuildEquipmentBonusText(item);
+            string priceLine = $"Price: {item.price} gold";
+
+            var sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(desc)) sb.Append(desc);
+            if (!string.IsNullOrEmpty(bonusText))
+            {
+                if (sb.Length > 0) sb.Append("\n");
+                sb.Append(bonusText);
+            }
+            if (sb.Length > 0) sb.Append("\n");
+            sb.Append(priceLine);
+
+            descriptionText.text = sb.ToString();
+        }
         if (autoSizer != null)
             autoSizer.SetText(titleText != null ? titleText.text : string.Empty, descriptionText != null ? descriptionText.text : string.Empty);
+    }
+
+    string BuildEquipmentBonusText(Item item)
+    {
+        if (item == null || !item.equippable) return null;
+        var b = item.equipmentBonuses;
+        var sb = new StringBuilder();
+
+        void Append(string label, float value)
+        {
+            if (Mathf.Approximately(value, 0f)) return;
+            if (sb.Length > 0) sb.Append("\n");
+            sb.Append(label).Append(": ").Append(FormatPercent(value));
+        }
+
+        Append(string.IsNullOrWhiteSpace(item.travelSpeedDescription) ? "Travel speed" : item.travelSpeedDescription, b.travelSpeed);
+        Append(string.IsNullOrWhiteSpace(item.craftingSpeedDescription) ? "Crafting speed" : item.craftingSpeedDescription, b.craftingSpeed);
+        Append(string.IsNullOrWhiteSpace(item.researchSpeedDescription) ? "Research speed" : item.researchSpeedDescription, b.researchSpeed);
+        Append(string.IsNullOrWhiteSpace(item.forageSpeedDescription) ? "Forage speed" : item.forageSpeedDescription, b.forageSpeed);
+        Append(string.IsNullOrWhiteSpace(item.forageLuckDescription) ? "Forage luck" : item.forageLuckDescription, b.forageLuck);
+        Append(string.IsNullOrWhiteSpace(item.tavernLuckDescription) ? "Tavern luck" : item.tavernLuckDescription, b.tavernLuck);
+        Append(string.IsNullOrWhiteSpace(item.researchLuckDescription) ? "Research luck" : item.researchLuckDescription, b.researchLuck);
+
+        return sb.Length > 0 ? sb.ToString() : null;
+    }
+
+    string FormatPercent(float value)
+    {
+        float pct = value * 100f;
+        return pct >= 0f ? $"+{pct:0.#}%" : $"{pct:0.#}%";
     }
 
     void PopulateFromResourceEntry(ResourceEntryUI entry)

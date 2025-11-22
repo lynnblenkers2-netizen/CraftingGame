@@ -26,7 +26,11 @@ public class OptionPopup : MonoBehaviour
         if (I == null) I = this;
         else if (I != this) { Destroy(gameObject); return; }
 
-        if (closeButton) closeButton.onClick.AddListener(Hide);
+        if (closeButton)
+        {
+            closeButton.onClick.RemoveAllListeners();
+            closeButton.onClick.AddListener(Hide);
+        }
         HideInstant();
     }
 
@@ -141,6 +145,13 @@ public class OptionPopup : MonoBehaviour
             cg.alpha = 1f;
             cg.blocksRaycasts = true;
             cg.interactable = true;
+        }
+
+        // Make sure the close button stays hooked up even if prefab listeners were cleared.
+        if (closeButton && closeButton.onClick.GetPersistentEventCount() == 0)
+        {
+            closeButton.onClick.RemoveAllListeners();
+            closeButton.onClick.AddListener(Hide);
         }
     }
 

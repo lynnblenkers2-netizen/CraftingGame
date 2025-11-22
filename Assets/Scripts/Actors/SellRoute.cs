@@ -12,26 +12,36 @@ public class SellRoute : ScriptableObject
     public bool roundTrip = true;
 
     [Header("Pricing")]
-    [Tooltip("Gold per item id; if not found → defaultPrice.")]
+    [Tooltip("Price multipliers per item tier on this route. If no entry exists for a tier, defaultMultiplier is used.")]
     public PriceEntry[] prices;
+    [Tooltip("Multiplier used when no tier-specific entry is found.")]
+    public float defaultMultiplier = 1f;
+    [Tooltip("Fallback base price if the item has no own price set.")]
     public int defaultPrice = 1;
 
     [System.Serializable]
     public struct PriceEntry
     {
-        public Item item;
-        public int goldPerItem;
+        [Min(1)] public int tier;
+        public float multiplier;
     }
 
     public int GetPrice(Item it)
     {
+        if (it == null) return defaultPrice;
+
+        float mult = defaultMultiplier;
+        int tier = Mathf.Max(1, it.tier);
         if (prices != null)
         {
-            foreach (var p in prices)
+            for (int i = 0; i < prices.Length; i++)
             {
-                if (p.item == it) return p.goldPerItem;
+                var p = prices[i];
+                if (p.tier == tier) { mult = p.multiplier; break; }
             }
         }
-        return defaultPrice;
+
+        int basePrice = it.price > 0 ? it.price : defaultPrice;
+        return Mathf.Max(0, Mathf.RoundToInt(basePrice * mult));
     }
 }

@@ -24,6 +24,10 @@ public class ActorInstance
 
     [Header("Backpack")]
     public Inventory backpack;
+    [Header("Equipment")]
+    public Inventory equipment;
+    [Header("Equipment Totals (debug)")]
+    [SerializeField] EquipmentTotals lastEquipmentTotals;
 
     [Header("Statements")]
     public List<string> statementLog = new();
@@ -44,6 +48,7 @@ public class ActorInstance
         instanceId = Guid.NewGuid().ToString("N");
         def = d;
         EnsureBackpackCapacity();
+        EnsureEquipmentSlots();
         AddStatement($"{def?.displayName ?? "Actor"} ready for duty.");
     }
 
@@ -58,6 +63,13 @@ public class ActorInstance
         int slots = GetDesiredBackpackSlots();
         if (backpack == null) backpack = new Inventory(slots);
         else if (backpack.Capacity != slots) backpack.SetCapacity(slots);
+    }
+
+    public void EnsureEquipmentSlots()
+    {
+        const int EquipmentSlots = 3;
+        if (equipment == null) equipment = new Inventory(EquipmentSlots);
+        else if (equipment.Capacity != EquipmentSlots) equipment.SetCapacity(EquipmentSlots);
     }
 
     public void AddStatement(string message)
@@ -127,7 +139,41 @@ public class ActorInstance
     public void Dispose()
     {
         backpack = null;
+        equipment = null;
         statementLog?.Clear();
         OnStatement = null;
+    }
+
+    public EquipmentTotals GetEquipmentTotals()
+    {
+        var totals = new EquipmentTotals();
+        if (equipment == null) return totals;
+        foreach (var st in equipment.Slots)
+        {
+            if (st == null || st.IsEmpty || st.Item == null) continue;
+            var b = st.Item.equipmentBonuses;
+            int count = Mathf.Max(1, st.Amount);
+            totals.travelSpeed += b.travelSpeed * count;
+            totals.craftingSpeed += b.craftingSpeed * count;
+            totals.researchSpeed += b.researchSpeed * count;
+            totals.forageSpeed += b.forageSpeed * count;
+            totals.forageLuck += b.forageLuck * count;
+            totals.tavernLuck += b.tavernLuck * count;
+            totals.researchLuck += b.researchLuck * count;
+        }
+        lastEquipmentTotals = totals;
+        return totals;
+    }
+
+    [System.Serializable]
+    public struct EquipmentTotals
+    {
+        public float travelSpeed;
+        public float craftingSpeed;
+        public float researchSpeed;
+        public float forageSpeed;
+        public float forageLuck;
+        public float tavernLuck;
+        public float researchLuck;
     }
 }

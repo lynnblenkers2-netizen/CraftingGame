@@ -17,4 +17,24 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 096ce8243287f9341aa62941d0d6baa3, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
+  tier: 1
+  equippable: 0
+  equipmentBonuses:
+    travelSpeed: 0
+    craftingSpeed: 0
+    researchSpeed: 0
+    forageSpeed: 0
+    forageLuck: 0
+    tavernLuck: 0
+    researchLuck: 0
+  travelSpeedDescription: Travel speed
+  craftingSpeedDescription: Crafting speed
+  researchSpeedDescription: Research speed
+  forageSpeedDescription: Forage speed
+  forageLuckDescription: Forage luck
+  tavernLuckDescription: Tavern luck
+  researchLuckDescription: Research luck
+  equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
+    Speed bonuses multiply duration denominators; luck bonuses multiply chances.
+  price: 15
   description: "Ein gef\xE4rbtes Item."

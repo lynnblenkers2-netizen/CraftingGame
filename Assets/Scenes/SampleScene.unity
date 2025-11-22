@@ -730,6 +730,19 @@ MonoBehaviour:
       - Item: {fileID: 0}
         Amount: 0
       lastKnownCapacity: 1
+    equipment:
+      slots:
+      - Item: {fileID: 0}
+        Amount: 0
+      lastKnownCapacity: 1
+    lastEquipmentTotals:
+      travelSpeed: 0
+      craftingSpeed: 0
+      researchSpeed: 0
+      forageSpeed: 0
+      forageLuck: 0
+      tavernLuck: 0
+      researchLuck: 0
     statementLog: []
     lastHaulSummary: 
     nextIdleThoughtTime: 0
@@ -749,6 +762,19 @@ MonoBehaviour:
       - Item: {fileID: 0}
         Amount: 0
       lastKnownCapacity: 1
+    equipment:
+      slots:
+      - Item: {fileID: 0}
+        Amount: 0
+      lastKnownCapacity: 1
+    lastEquipmentTotals:
+      travelSpeed: 0
+      craftingSpeed: 0
+      researchSpeed: 0
+      forageSpeed: 0
+      forageLuck: 0
+      tavernLuck: 0
+      researchLuck: 0
     statementLog: []
     lastHaulSummary: 
     nextIdleThoughtTime: 0
@@ -2737,7 +2763,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   discovered: []
-  starterRecipes: []
+  starterRecipes:
+  - {fileID: 11400000, guid: e9dd194127a76af4282db23dbb7dca09, type: 2}
   seedAllFromDatabase: 0
   editorNote: 'RecipeCatalogService stores the player''s discovered recipes at runtime.
 
@@ -3530,7 +3557,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 10
   m_Viewport: {fileID: 1833218392}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 1791870457}

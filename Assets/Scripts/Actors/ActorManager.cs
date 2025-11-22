@@ -47,7 +47,10 @@ public class ActorManager : MonoBehaviour
         if (playerProgress == null) playerProgress = FindObjectOfType<PlayerProgress>();
         if (calendar) calendar.OnDayChanged += OnDay;
         foreach (var a in actors)
+        {
             a?.EnsureBackpackCapacity();
+            a?.EnsureEquipmentSlots();
+        }
     }
     void OnDisable() { if (calendar) calendar.OnDayChanged -= OnDay; }
     void OnDestroy()
@@ -79,7 +82,7 @@ public class ActorManager : MonoBehaviour
         if (a.state != ActorState.Idle) return;
         a.taskType = "forage"; a.taskAsset = area; a.repeatTask = repeat;
         a.state = ActorState.Traveling;
-        a.remainingDays = area.travelDays / a.Role.efficiency;
+        a.remainingDays = area.travelDays / (a.Role.efficiency * GetTravelSpeedMultiplier(a));
         a.lastHaulSummary = "nothing";
         a.AddStatement(Stamp($"Heading to {area.displayName}."));
     }
@@ -90,7 +93,7 @@ public class ActorManager : MonoBehaviour
         if (a.state != ActorState.Idle) return;
         a.taskType = "sell"; a.taskAsset = route; a.repeatTask = repeat;
         a.state = ActorState.Traveling;
-        a.remainingDays = route.travelDays / a.Role.efficiency;
+        a.remainingDays = route.travelDays / (a.Role.efficiency * GetTravelSpeedMultiplier(a));
         a.AddStatement(Stamp($"Traveling along {route.displayName} to sell goods."));
     }
 
@@ -100,7 +103,7 @@ public class ActorManager : MonoBehaviour
         if (a.state != ActorState.Idle) return;
         a.taskType = "research"; a.taskAsset = domain; a.repeatTask = repeat;
         a.state = ActorState.Working;
-        a.remainingDays = domain.days / a.Role.efficiency;
+        a.remainingDays = domain.days / (a.Role.efficiency * GetResearchSpeedMultiplier(a));
         a.AddStatement(Stamp($"Studying {domain.displayName}."));
     }
 
@@ -110,7 +113,7 @@ public class ActorManager : MonoBehaviour
         if (a.state != ActorState.Idle) return;
         a.taskType = "craft"; a.taskAsset = plan; a.repeatTask = repeat;
         a.state = ActorState.Working;
-        a.remainingDays = plan.daysPerCraft / a.Role.efficiency;
+        a.remainingDays = plan.daysPerCraft / (a.Role.efficiency * GetCraftSpeedMultiplier(a));
         a.AddStatement(Stamp($"Working on {plan.displayName}."));
     }
 
@@ -120,7 +123,7 @@ public class ActorManager : MonoBehaviour
         if (a.state != ActorState.Idle) return;
         a.taskType = "tavern"; a.taskAsset = visit; a.repeatTask = repeat;
         a.state = ActorState.Working;
-        a.remainingDays = visit.visitDays / a.Role.efficiency;
+        a.remainingDays = visit.visitDays / (a.Role.efficiency * GetTravelSpeedMultiplier(a));
         a.AddStatement(Stamp(visit.msgHeadingToTavern));
     }
 
@@ -175,7 +178,7 @@ public class ActorManager : MonoBehaviour
         if (a.state == ActorState.Traveling)
         {
             a.state = ActorState.Working;
-            a.remainingDays = area.workDays / a.Role.efficiency;
+            a.remainingDays = area.workDays / (a.Role.efficiency * GetForageSpeedMultiplier(a));
             a.AddStatement(Stamp($"Started foraging in {area.displayName}."));
             return;
         }
@@ -194,7 +197,8 @@ public class ActorManager : MonoBehaviour
                 foreach (var d in area.drops)
                 {
                     if (!d.item || d.max <= 0) continue;
-                    float probability = d.dropChance <= 0f ? 1f : Mathf.Clamp01(d.dropChance);
+                    if (!IsItemTierAllowed(a, d.item)) continue;
+                    float probability = d.dropChance <= 0f ? 1f : Mathf.Clamp01(d.dropChance * (1f + GetForageLuckBonus(a)));
                     if (rng.NextDouble() > probability) continue;
                     int amount = area.RollAmount(rng, seasonMul, d);
                     if (amount > 0)
@@ -219,7 +223,7 @@ public class ActorManager : MonoBehaviour
             if (area.roundTrip)
             {
                 a.state = ActorState.Returning;
-                a.remainingDays = area.travelDays / a.Role.efficiency;
+                a.remainingDays = area.travelDays / (a.Role.efficiency * GetTravelSpeedMultiplier(a));
                 a.AddStatement(Stamp(foundSomething
                     ? $"Heading back from {area.displayName} with {a.lastHaulSummary}."
                 : $"Heading back from {area.displayName} empty-handed."));
@@ -272,7 +276,7 @@ public class ActorManager : MonoBehaviour
             playerProgress?.GrantXP(3);
 
             a.state = ActorState.Returning;
-            a.remainingDays = route.travelDays / a.Role.efficiency;
+            a.remainingDays = route.travelDays / (a.Role.efficiency * GetTravelSpeedMultiplier(a));
             a.AddStatement(Stamp($"Heading back from {route.displayName} with {a.lastHaulSummary}."));
         }
         else if (a.state == ActorState.Returning)
@@ -293,18 +297,33 @@ public class ActorManager : MonoBehaviour
         var domain = a.taskAsset as ResearchDomain;
         if (domain == null) { a.state = ActorState.Idle; return; }
 
-        bool gotRecipe = rng.NextDouble() < domain.recipeChance;
+        float researchLuck = GetResearchLuckBonus(a);
+        bool gotRecipe = rng.NextDouble() < Mathf.Clamp01(domain.recipeChance * (1f + researchLuck));
         if (gotRecipe && domain.possibleRecipes != null && domain.possibleRecipes.Length > 0)
         {
-            var r = domain.possibleRecipes[rng.Next(domain.possibleRecipes.Length)];
-            if (r)
+            var eligible = new System.Collections.Generic.List<ShapedRecipe>();
+            foreach (var r in domain.possibleRecipes)
             {
-                UnlockRecipe(r);
-                a.AddStatement(Stamp($"Discovered recipe {r.name}."));
+                if (r != null && IsRecipeTierAllowed(a, r))
+                    eligible.Add(r);
+            }
+
+            if (eligible.Count > 0)
+            {
+                var r = eligible[rng.Next(eligible.Count)];
+                if (r)
+                {
+                    UnlockRecipe(r);
+                    a.AddStatement(Stamp($"Discovered recipe {r.name}."));
+                }
+            }
+            else
+            {
+                gotRecipe = false;
             }
         }
 
-        bool gotSpiritGen = rng.NextDouble() < domain.spiritGenChance;
+        bool gotSpiritGen = rng.NextDouble() < Mathf.Clamp01(domain.spiritGenChance * (1f + researchLuck));
         if (gotSpiritGen && domain.possibleSpiritGenerators != null && domain.possibleSpiritGenerators.Length > 0)
         {
             var p = domain.possibleSpiritGenerators[rng.Next(domain.possibleSpiritGenerators.Length)];
@@ -354,7 +373,7 @@ public class ActorManager : MonoBehaviour
         }
 
         a.state = ActorState.Working;
-        a.remainingDays = plan.daysPerCraft / a.Role.efficiency;
+        a.remainingDays = plan.daysPerCraft / (a.Role.efficiency * GetCraftSpeedMultiplier(a));
 
         if (!ok)
         {
@@ -373,31 +392,31 @@ public class ActorManager : MonoBehaviour
                 case "forage":
                     var area = (ForageArea)a.taskAsset;
                     a.state = ActorState.Traveling;
-                    a.remainingDays = area.travelDays / a.Role.efficiency;
+                    a.remainingDays = area.travelDays / (a.Role.efficiency * GetTravelSpeedMultiplier(a));
                     a.AddStatement(Stamp($"Looping forage route {area.displayName}."));
                     break;
                 case "sell":
                     var route = (SellRoute)a.taskAsset;
                     a.state = ActorState.Traveling;
-                    a.remainingDays = route.travelDays / a.Role.efficiency;
+                    a.remainingDays = route.travelDays / (a.Role.efficiency * GetTravelSpeedMultiplier(a));
                     a.AddStatement(Stamp($"Heading out again on {route.displayName}."));
                     break;
                 case "research":
                     var rd = (ResearchDomain)a.taskAsset;
                     a.state = ActorState.Working;
-                    a.remainingDays = rd.days / a.Role.efficiency;
+                    a.remainingDays = rd.days / (a.Role.efficiency * GetResearchSpeedMultiplier(a));
                     a.AddStatement(Stamp($"Continuing research in {rd.displayName}."));
                     break;
                 case "craft":
                     var cp = (CraftPlan)a.taskAsset;
                     a.state = ActorState.Working;
-                    a.remainingDays = cp.daysPerCraft / a.Role.efficiency;
+                    a.remainingDays = cp.daysPerCraft / (a.Role.efficiency * GetCraftSpeedMultiplier(a));
                     a.AddStatement(Stamp($"Continuing {cp.displayName}."));
                     break;
                 case "tavern":
                     var tv = (TavernVisit)a.taskAsset;
                     a.state = ActorState.Working;
-                    a.remainingDays = tv.visitDays / a.Role.efficiency;
+                    a.remainingDays = tv.visitDays / (a.Role.efficiency * GetTravelSpeedMultiplier(a));
                     a.AddStatement(Stamp(tv.msgHeadingToTavern));
                     break;
             }
@@ -436,15 +455,16 @@ public class ActorManager : MonoBehaviour
             }
         }
 
+        float tavernLuck = GetTavernLuckBonus(a);
         bool anyDiscovery = false;
-        if (visit.forageLeads != null && rng.NextDouble() < visit.chanceForageLead)
+        if (visit.forageLeads != null && rng.NextDouble() < Mathf.Clamp01(visit.chanceForageLead * (1f + tavernLuck)))
             anyDiscovery |= TryUnlockArea(a, visit.forageLeads, visit.msgFoundForage);
-        if (visit.sellLeads != null && rng.NextDouble() < visit.chanceSellLead)
+        if (visit.sellLeads != null && rng.NextDouble() < Mathf.Clamp01(visit.chanceSellLead * (1f + tavernLuck)))
             anyDiscovery |= TryUnlockRoute(a, visit.sellLeads, visit.msgFoundSell);
-        if (visit.researchLeads != null && rng.NextDouble() < visit.chanceResearchLead)
+        if (visit.researchLeads != null && rng.NextDouble() < Mathf.Clamp01(visit.chanceResearchLead * (1f + tavernLuck)))
             anyDiscovery |= TryUnlockDomain(a, visit.researchLeads, visit.msgFoundResearch);
 
-        if (visit.actorOffers != null && visit.actorOffers.Count > 0 && rng.NextDouble() < visit.chanceNewActorOffer)
+        if (visit.actorOffers != null && visit.actorOffers.Count > 0 && rng.NextDouble() < Mathf.Clamp01(visit.chanceNewActorOffer * (1f + tavernLuck)))
         {
             var offer = PickRandom(visit.actorOffers);
             ShowActorOffer(offer, visit);
@@ -457,7 +477,7 @@ public class ActorManager : MonoBehaviour
         MaybeAddThought(a);
 
         a.state = ActorState.Returning;
-        a.remainingDays = visit.visitDays / a.Role.efficiency;
+        a.remainingDays = visit.visitDays / (a.Role.efficiency * GetTravelSpeedMultiplier(a));
         a.AddStatement(Stamp($"Heading back from {visit.displayName}."));
     }
 
@@ -471,6 +491,18 @@ public class ActorManager : MonoBehaviour
     {
         var recipe = plan.recipe;
         if (recipe == null) return false;
+
+        if (!IsRecipeTierAllowed(a, recipe))
+        {
+            a.AddStatement(Stamp($"Cannot craft {recipe.name}: requires level {RequiredLevelForTier(recipe.tier)} (current {a?.level})."));
+            return false;
+        }
+
+        if (recipe.outputItem != null && !IsItemTierAllowed(a, recipe.outputItem))
+        {
+            a.AddStatement(Stamp($"Cannot craft {recipe.name}: output {recipe.outputItem.DisplayName} requires level {RequiredLevelForTier(recipe.outputItem.tier)} (current {a?.level})."));
+            return false;
+        }
 
         var catalog = RecipeCatalogService.Instance ?? FindObjectOfType<RecipeCatalogService>();
         if (catalog != null && !catalog.HasRecipe(recipe))
@@ -491,6 +523,12 @@ public class ActorManager : MonoBehaviour
 
         foreach (var kv in needs)
         {
+            if (!IsItemTierAllowed(a, kv.Key))
+            {
+                a.AddStatement(Stamp($"Cannot use {kv.Key.DisplayName}: requires level {RequiredLevelForTier(kv.Key.tier)} (current {a?.level})."));
+                return false;
+            }
+
             int total = 0;
             var globalInv = PlayerInventory;
             if (fromBackpackFirst)
@@ -589,6 +627,20 @@ public class ActorManager : MonoBehaviour
             else needs[ing.item] = ing.amount;
         }
         return needs;
+    }
+
+    int RequiredLevelForTier(int tier) => Mathf.Max(1, tier);
+
+    bool IsItemTierAllowed(ActorInstance a, Item item)
+    {
+        if (a == null || item == null) return false;
+        return a.level >= RequiredLevelForTier(item.tier);
+    }
+
+    bool IsRecipeTierAllowed(ActorInstance a, ShapedRecipe recipe)
+    {
+        if (a == null || recipe == null) return false;
+        return a.level >= RequiredLevelForTier(recipe.tier);
     }
 
     bool TryUnlockArea(ActorInstance a, List<ForageArea> pool, string messageFormat)
@@ -1077,6 +1129,52 @@ public class ActorManager : MonoBehaviour
 
         if (chance <= 0f || multiplier <= 1f) return baseAmount;
         return (rng.NextDouble() < chance) ? Mathf.RoundToInt(baseAmount * multiplier) : baseAmount;
+    }
+
+    float GetTravelSpeedMultiplier(ActorInstance a)
+    {
+        if (a == null) return 1f;
+        var b = a.GetEquipmentTotals();
+        return Mathf.Max(0.1f, 1f + b.travelSpeed);
+    }
+
+    float GetCraftSpeedMultiplier(ActorInstance a)
+    {
+        if (a == null) return 1f;
+        var b = a.GetEquipmentTotals();
+        return Mathf.Max(0.1f, 1f + b.craftingSpeed);
+    }
+
+    float GetResearchSpeedMultiplier(ActorInstance a)
+    {
+        if (a == null) return 1f;
+        var b = a.GetEquipmentTotals();
+        return Mathf.Max(0.1f, 1f + b.researchSpeed);
+    }
+
+    float GetForageSpeedMultiplier(ActorInstance a)
+    {
+        if (a == null) return 1f;
+        var b = a.GetEquipmentTotals();
+        return Mathf.Max(0.1f, 1f + b.forageSpeed);
+    }
+
+    float GetForageLuckBonus(ActorInstance a)
+    {
+        if (a == null) return 0f;
+        return Mathf.Max(0f, a.GetEquipmentTotals().forageLuck);
+    }
+
+    float GetTavernLuckBonus(ActorInstance a)
+    {
+        if (a == null) return 0f;
+        return Mathf.Max(0f, a.GetEquipmentTotals().tavernLuck);
+    }
+
+    float GetResearchLuckBonus(ActorInstance a)
+    {
+        if (a == null) return 0f;
+        return Mathf.Max(0f, a.GetEquipmentTotals().researchLuck);
     }
 
     string Stamp(string message)

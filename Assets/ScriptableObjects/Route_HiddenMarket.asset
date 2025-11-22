@@ -17,5 +17,12 @@ MonoBehaviour:
   travelDays: 0.7
   marketDays: 0.7
   roundTrip: 1
-  prices: []
+  prices:
+  - tier: 1
+    multiplier: 2
+  - tier: 2
+    multiplier: 3
+  - tier: 3
+    multiplier: 4
+  defaultMultiplier: 1
   defaultPrice: 5

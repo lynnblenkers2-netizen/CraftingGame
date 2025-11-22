@@ -34,9 +34,16 @@ public class ActorCardUI : MonoBehaviour
     public GameObject logEntryPrefab;
     public CanvasGroup statementLogCanvasGroup;
     [SerializeField] bool verboseLogging;
+    readonly System.Collections.Generic.Dictionary<Button, ButtonState> lastButtonStates = new();
 
     [Header("Embedded Backpack")]
     public InventoryUI backpackUI; // InventoryUI-Komponente in der Card
+    [Header("Equipment Slots")]
+    [SerializeField] ItemSlotUI[] equipmentSlots = new ItemSlotUI[3];
+    [Header("Equipment Panel")]
+    public GameObject equipmentPanel;
+    public Button equipmentButton;
+    public Button equipmentCloseButton;
 
     [Header("Localized Strings")]
     public string statusIdleText = "Idle";
@@ -95,14 +102,14 @@ public class ActorCardUI : MonoBehaviour
                 portrait.sprite = actor.def.portraitOverride ? actor.def.portraitOverride : actor.def.role?.portrait;
             if (nameLabel) nameLabel.text = actor.def.displayName;
             if (roleLabel) roleLabel.text = actor.def.role ? actor.def.role.displayName : "-";
-            if (spiritPerDayLabel) spiritPerDayLabel.text = string.Format(spiritPerDayPrefix, Mathf.Max(0, actor.def.spiritPerDay));
+            if (spiritPerDayLabel) spiritPerDayLabel.text = Mathf.Max(0, actor.def.spiritPerDay).ToString();
         }
         else
         {
             if (portrait) portrait.sprite = null;
             if (nameLabel) nameLabel.text = "-";
             if (roleLabel) roleLabel.text = "-";
-            if (spiritPerDayLabel) spiritPerDayLabel.text = string.Format(spiritPerDayPrefix, 0);
+            if (spiritPerDayLabel) spiritPerDayLabel.text = "0";
         }
 
         EnsureStatementUI();
@@ -121,6 +128,8 @@ public class ActorCardUI : MonoBehaviour
                 }
             }
         }
+
+        BindEquipment();
 
         // Buttons → Popups
         WireButtons();
@@ -161,6 +170,28 @@ public class ActorCardUI : MonoBehaviour
         btn.onClick.RemoveAllListeners();
         if (interactable && handler != null)
             btn.onClick.AddListener(handler);
+
+        if (verboseLogging)
+        {
+            string name = btn != null ? btn.name : "<null>";
+            string handlerName = handler != null ? handler.Method.Name : "<null>";
+            var cur = new ButtonState
+            {
+                Visible = visible,
+                Interactable = interactable,
+                Handler = handlerName,
+                ActorState = actor?.state
+            };
+            if (!lastButtonStates.TryGetValue(btn, out var prev) ||
+                prev.Visible != cur.Visible ||
+                prev.Interactable != cur.Interactable ||
+                prev.Handler != cur.Handler ||
+                prev.ActorState != cur.ActorState)
+            {
+                Log($"ConfigureButton {name}: visible={visible}, interactable={interactable}, handler={handlerName}, actorState={actor?.state}");
+                lastButtonStates[btn] = cur;
+            }
+        }
     }
 
     void OnDestroy()
@@ -213,18 +244,38 @@ public class ActorCardUI : MonoBehaviour
 
     void EnsureStatementUI()
     {
-        Log("EnsureStatementUI");
         HideLogPanelImmediate();
 
         if (statementLogButton)
         {
             statementLogButton.onClick.RemoveAllListeners();
-            statementLogButton.onClick.AddListener(() => ToggleLogPanel(true));
+            statementLogButton.onClick.AddListener(() =>
+            {
+                CloseCraftingPanel();
+                CloseEquipmentPanel();
+                ToggleLogPanel(true);
+            });
         }
         if (statementLogCloseButton)
         {
             statementLogCloseButton.onClick.RemoveAllListeners();
             statementLogCloseButton.onClick.AddListener(() => ToggleLogPanel(false));
+        }
+
+        if (equipmentButton)
+        {
+            equipmentButton.onClick.RemoveAllListeners();
+            equipmentButton.onClick.AddListener(() =>
+            {
+                ToggleLogPanel(false);
+                CloseCraftingPanel();
+                ToggleEquipmentPanel(true);
+            });
+        }
+        if (equipmentCloseButton)
+        {
+            equipmentCloseButton.onClick.RemoveAllListeners();
+            equipmentCloseButton.onClick.AddListener(() => ToggleEquipmentPanel(false));
         }
     }
 
@@ -243,6 +294,18 @@ public class ActorCardUI : MonoBehaviour
         {
             Canvas.ForceUpdateCanvases();
             statementLogScroll.verticalNormalizedPosition = 0f;
+        }
+    }
+
+    void ToggleEquipmentPanel(bool show)
+    {
+        if (!equipmentPanel) return;
+        equipmentPanel.SetActive(show);
+        if (equipmentPanel.TryGetComponent<CanvasGroup>(out var cg))
+        {
+            cg.alpha = show ? 1f : 0f;
+            cg.interactable = show;
+            cg.blocksRaycasts = show;
         }
     }
 
@@ -276,7 +339,6 @@ public class ActorCardUI : MonoBehaviour
     void HideLogPanelImmediate()
     {
         if (!statementLogPanel) return;
-        Log("HideLogPanelImmediate");
         statementLogPanel.SetActive(false);
         if (statementLogCanvasGroup)
         {
@@ -305,7 +367,6 @@ public class ActorCardUI : MonoBehaviour
     void AppendStatementEntry(string text)
     {
         if (string.IsNullOrEmpty(text) || statementLogContent == null) return;
-        Log($"AppendStatementEntry {text}");
         var prefab = logEntryPrefab ? logEntryPrefab : LoadDefaultLogPrefab();
         if (!prefab) return;
         var go = Instantiate(prefab, statementLogContent);
@@ -357,33 +418,59 @@ public class ActorCardUI : MonoBehaviour
         backpackUI.SetInteractable(canInteract);
     }
 
+    void BindEquipment()
+    {
+        if (actor == null) return;
+        actor.EnsureEquipmentSlots();
+        if (equipmentSlots == null || equipmentSlots.Length == 0) return;
+        for (int i = 0; i < equipmentSlots.Length; i++)
+        {
+            var slot = equipmentSlots[i];
+            if (slot == null) continue;
+            slot.onlyEquippable = true;
+            slot.owningActor = actor;
+            slot.Init(actor.equipment, i, ItemSlotUI.OwnerType.Inventory);
+        }
+        if (equipmentPanel) equipmentPanel.SetActive(false);
+    }
+
     void UpdateAssignmentButtons()
     {
         if (actor == null) return;
         bool canAssign = actor.state == ActorState.Idle;
-        if (btnChooseForage) btnChooseForage.interactable = btnChooseForage.gameObject.activeSelf && canAssign && actor.Role?.canForage == true;
-        if (btnChooseSell) btnChooseSell.interactable = btnChooseSell.gameObject.activeSelf && canAssign && actor.Role?.canSell == true;
-        if (btnChooseResearch) btnChooseResearch.interactable = btnChooseResearch.gameObject.activeSelf && canAssign && actor.Role?.canResearch == true;
-        if (btnChooseCraft) btnChooseCraft.interactable = btnChooseCraft.gameObject.activeSelf && canAssign && actor.Role?.canCraft == true;
-        if (btnChooseTavern) btnChooseTavern.interactable = btnChooseTavern.gameObject.activeSelf && canAssign && actor.Role?.canVisitTavern == true;
+
+        // Reconfigure each frame to guard against listeners getting stripped at runtime.
+        ConfigureButton(btnChooseForage, actor.Role?.canForage == true, canAssign && actor.Role?.canForage == true, OnChooseForage);
+        ConfigureButton(btnChooseSell, actor.Role?.canSell == true, canAssign && actor.Role?.canSell == true, OnChooseSell);
+        ConfigureButton(btnChooseResearch, actor.Role?.canResearch == true, canAssign && actor.Role?.canResearch == true, OnChooseResearch);
+        ConfigureButton(btnChooseCraft, actor.Role?.canCraft == true, canAssign && actor.Role?.canCraft == true, OnChooseCraft);
+        ConfigureButton(btnChooseTavern, actor.Role?.canVisitTavern == true, canAssign && actor.Role?.canVisitTavern == true, OnChooseTavern);
+
         if (btnMoveBackpack)
-            btnMoveBackpack.interactable = btnMoveBackpack.gameObject.activeSelf && actor.backpack != null && canAssign;
+        {
+            btnMoveBackpack.gameObject.SetActive(true);
+            btnMoveBackpack.interactable = actor.backpack != null && canAssign;
+            btnMoveBackpack.onClick.RemoveAllListeners();
+            if (btnMoveBackpack.interactable)
+                btnMoveBackpack.onClick.AddListener(MoveBackpackToInventory);
+        }
     }
 
     void UpdateStatsUI()
     {
         if (actor == null) return;
-        if (levelLabel) levelLabel.text = $"Lv {actor.level} ({actor.xp} XP)";
+        if (levelLabel) levelLabel.text = $"{actor.level}";
         if (happinessLabel)
         {
             float happy = actor != null ? actor.EffectiveHappiness : (actor?.def != null ? actor.def.happiness : 0f);
-            happinessLabel.text = $"Happy {Mathf.RoundToInt(happy * 100f)}%";
+            happinessLabel.text = $"{Mathf.RoundToInt(happy * 100f)}%";
         }
     }
 
         // -------- Popup Handlers --------
     void OnChooseForage()
     {
+        Log("OnChooseForage clicked");
         if (panel == null || panel.forageAreas == null || panel.forageAreas.Count == 0)
         {
             ToastSystem.Info("Keine Areas definiert");
@@ -396,6 +483,7 @@ public class ActorCardUI : MonoBehaviour
 
     void OnChooseSell()
     {
+        Log("OnChooseSell clicked");
         if (panel == null || panel.sellRoutes == null || panel.sellRoutes.Count == 0)
         {
             ToastSystem.Info("Keine Routen definiert");
@@ -408,6 +496,7 @@ public class ActorCardUI : MonoBehaviour
 
     void OnChooseResearch()
     {
+        Log("OnChooseResearch clicked");
         if (panel == null || panel.researchDomains == null || panel.researchDomains.Count == 0)
         {
             ToastSystem.Info("Keine Domaenen definiert");
@@ -420,9 +509,11 @@ public class ActorCardUI : MonoBehaviour
 
     void OnChooseCraft()
     {
+        Log("OnChooseCraft clicked");
         var targetPanel = craftingPanel != null ? craftingPanel : panel?.craftingPanel;
         if (targetPanel != null)
         {
+            ToggleLogPanel(false);
             targetPanel.Open(actor);
             return;
         }
@@ -437,8 +528,18 @@ public class ActorCardUI : MonoBehaviour
             idx => panel.AssignCraft(actor, idx, false));
     }
 
+    void CloseCraftingPanel()
+    {
+        var targetPanel = craftingPanel != null ? craftingPanel : panel?.craftingPanel;
+        if (targetPanel != null)
+            targetPanel.Close();
+    }
+
+    void CloseEquipmentPanel() => ToggleEquipmentPanel(false);
+
     void OnChooseTavern()
     {
+        Log("OnChooseTavern clicked");
         if (panel == null || panel.tavernVisits == null || panel.tavernVisits.Count == 0)
         {
             ToastSystem.Info("Keine Taverne definiert");
@@ -493,6 +594,14 @@ public class ActorCardUI : MonoBehaviour
             ActorState.Paused => statusPausedText,
             _ => state.ToString()
         };
+    }
+
+    struct ButtonState
+    {
+        public bool Visible;
+        public bool Interactable;
+        public string Handler;
+        public ActorState? ActorState;
     }
 }
 

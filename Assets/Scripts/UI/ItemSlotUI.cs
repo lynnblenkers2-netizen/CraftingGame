@@ -13,6 +13,12 @@ public class ItemSlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     [System.NonSerialized]
     public Inventory inventory;
     public CraftingGrid craftingGrid;
+    [Tooltip("If true, only items with a ProducerDefinition can be placed here.")]
+    public bool onlyProducerItems;
+    [Tooltip("If true, only items marked as equippable can be placed here.")]
+    public bool onlyEquippable;
+    [Tooltip("Optional: actor owning this slot (used for equipment gating).")]
+    public ActorInstance owningActor;
 
     [Header("UI")]
     public Image iconImage;
@@ -224,8 +230,16 @@ public class ItemSlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         var from = source.Stack;
         var to = Stack;
         if (from.IsEmpty) { HideAllDropHints(); return; }
+        if (!AcceptsItem(from.Item)) { HideAllDropHints(); return; }
 
         int qty = ComputeDropQuantity(from.Amount, source.owner, owner);
+
+        if (onlyEquippable)
+        {
+            // Equipment slots allow exactly one item; no stacking.
+            qty = 1;
+            if (!to.IsEmpty) { HideAllDropHints(); return; }
+        }
 
         if (to.IsEmpty || to.Item == from.Item)
         {
@@ -313,6 +327,15 @@ public class ItemSlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         {
             dragIcon.localPosition = local;
         }
+    }
+
+    public bool AcceptsItem(Item item)
+    {
+        if (item == null) return false;
+        if (onlyProducerItems) return item.producer != null;
+        if (onlyEquippable && !item.equippable) return false;
+        if (onlyEquippable && owningActor != null && owningActor.level < Mathf.Max(1, item.tier)) return false;
+        return true;
     }
 
     static void NotifyOwnerChanged(ItemSlotUI slot)

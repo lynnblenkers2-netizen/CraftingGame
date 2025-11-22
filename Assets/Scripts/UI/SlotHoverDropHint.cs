@@ -38,6 +38,8 @@ public class SlotHoverDropHint : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         if (source == target) return false;
 
+        if (!target.AcceptsItem(dragged)) return false;
+
         var tStack = target.Stack;
         if (target.owner == ItemSlotUI.OwnerType.Inventory || target.owner == ItemSlotUI.OwnerType.Backpack)
             return true;

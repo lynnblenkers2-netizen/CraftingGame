@@ -18,6 +18,11 @@ MonoBehaviour:
   marketDays: 0.1
   roundTrip: 1
   prices:
-  - item: {fileID: 11400000, guid: f68c9d3a687f6dc4f965428a814273a9, type: 2}
-    goldPerItem: 3
+  - tier: 1
+    multiplier: 2
+  - tier: 2
+    multiplier: 2
+  - tier: 3
+    multiplier: 2
+  defaultMultiplier: 1
   defaultPrice: 1
