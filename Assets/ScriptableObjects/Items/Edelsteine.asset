@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Edelsteine
   m_EditorClassIdentifier: 
   Id: 1
-  DisplayName: Edelsteine
-  Icon: {fileID: -6508908407416351038, guid: 93500fb32f7e0d342bc294c9d008f190, type: 3}
+  DisplayName: gold radio
+  Icon: {fileID: 3596014016990579304, guid: d86c53b1ed10c404da3558caf5b1571e, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 1

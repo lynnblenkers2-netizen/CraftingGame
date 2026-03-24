@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fc9cefd01fc48be99418e971aee59cc, type: 3}
   m_Name: Producer_Artifact
   m_EditorClassIdentifier: 
-  id: legendaryArtifact
-  displayName: Weird Gem
-  icon: {fileID: 21300000, guid: fd3321e3383b0b846bfe44c8782ff70c, type: 3}
+  id: the golden radio
+  displayName: Radio
+  icon: {fileID: 3596014016990579304, guid: d86c53b1ed10c404da3558caf5b1571e, type: 3}
   spiritPerSecond: 2
   description: A weird Gem that somehow is inspiring.

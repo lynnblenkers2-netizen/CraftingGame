@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Orange
   m_EditorClassIdentifier: 
   Id: orange
-  DisplayName: Orange
-  Icon: {fileID: 21300000, guid: 047413e491b89f947a3f0518d700ef78, type: 3}
+  DisplayName: bronze
+  Icon: {fileID: -6833541923527212562, guid: e03ffdf9d38c0b94a87cf722a1980d98, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 2

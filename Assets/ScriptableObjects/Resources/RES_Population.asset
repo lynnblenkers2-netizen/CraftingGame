@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d0340907ea066e49b31a5fc3525536d, type: 3}
   m_Name: RES_Population
   m_EditorClassIdentifier: 
-  id: friends
-  icon: {fileID: -2554768595615315461, guid: efccf4f91461006469bbf92d4bd5e517, type: 3}
-  displayName: Friends
+  id: HP
+  icon: {fileID: 2026646591946803880, guid: b29729a8a50d80d41b3d31baac8086ee, type: 3}
+  displayName: HP
   maxStack: 99
   description: Your Actor slots

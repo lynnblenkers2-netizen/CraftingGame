@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: weiss
   DisplayName: "Wei\xDF"
-  Icon: {fileID: 21300000, guid: 4579304ceb788b640b9e0deab31061c9, type: 3}
+  Icon: {fileID: 5091840924672322694, guid: 1efa7845ad675a54680e9f8e075b0d36, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 3

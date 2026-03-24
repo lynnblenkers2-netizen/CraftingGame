@@ -952,9 +952,9 @@ RectTransform:
   - {fileID: 654147458}
   m_Father: {fileID: 699248706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 130, y: -46.8205}
   m_SizeDelta: {x: 250, y: 83.641}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &253124746
@@ -1169,6 +1169,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 261892510}
   m_CullTransparentMesh: 1
+--- !u!21 &322670029
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Tiny5-Regular Material
+  m_Shader: {fileID: 4800000, guid: 128e987d567d4e2c824d754223b3f3b0, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - OUTLINE_ON
+  - OUTLINE_ON_2
+  - UNDERLAY_ON
+  - USE_VERTEX_COLOR
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _FaceTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: -105920234340948347, guid: 015c6657a4dbfe24d9a37f27a97daa82, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _CullMode: 0
+    - _MaskSoftnessX: 0
+    - _MaskSoftnessY: 0
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _VertexOffsetX: 0
+    - _VertexOffsetY: 0
+    m_Colors:
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &378488428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1922,7 +1975,7 @@ MonoBehaviour:
     icon: {fileID: 0}
     valueText: {fileID: 0}
     format: 
-  seasonDot: {fileID: 1991271131}
+  seasonIcon: {fileID: 0}
   seasonLabel: {fileID: 1196007291}
   dayLabel: {fileID: 387300460}
   dayProgressFill: {fileID: 1139573426}
@@ -2424,7 +2477,7 @@ MonoBehaviour:
   m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 015c6657a4dbfe24d9a37f27a97daa82, type: 2}
-  m_sharedMaterial: {fileID: 1263694885}
+  m_sharedMaterial: {fileID: 322670029}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3748,10 +3801,10 @@ RectTransform:
   - {fileID: 1589149868}
   m_Father: {fileID: 1700965144}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 82.57, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 157.57469, y: -20.9665}
+  m_SizeDelta: {x: 82.57, y: 41.933}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &817946084
 MonoBehaviour:
@@ -6034,10 +6087,10 @@ RectTransform:
   - {fileID: 1714283775}
   m_Father: {fileID: 1700965144}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 110.6, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 254.1597, y: -20.9665}
+  m_SizeDelta: {x: 110.6, y: 41.933}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1164132424
 MonoBehaviour:
@@ -6661,59 +6714,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 210736246}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &1263694885
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Tiny5-Regular Material
-  m_Shader: {fileID: 4800000, guid: 128e987d567d4e2c824d754223b3f3b0, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
-  - OUTLINE_ON
-  - OUTLINE_ON_2
-  - UNDERLAY_ON
-  - USE_VERTEX_COLOR
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _FaceTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: -105920234340948347, guid: 015c6657a4dbfe24d9a37f27a97daa82, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _CullMode: 0
-    - _MaskSoftnessX: 0
-    - _MaskSoftnessY: 0
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _VertexOffsetX: 0
-    - _VertexOffsetY: 0
-    m_Colors:
-    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
-    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1290236136
 GameObject:
   m_ObjectHideFlags: 0
@@ -7984,6 +7984,11 @@ MonoBehaviour:
   - {r: 1, g: 0.9, b: 0.4, a: 1}
   - {r: 1, g: 0.6, b: 0.3, a: 1}
   - {r: 0.8, g: 0.9, b: 1, a: 1}
+  seasonIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   startYear: 1
   startSeasonIndex: 0
   startDayInSeason: 1
@@ -8181,9 +8186,9 @@ RectTransform:
   - {fileID: 1164132423}
   m_Father: {fileID: 1352861560}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 156.34016, y: -140.92209}
   m_SizeDelta: {x: 309.4597, y: 41.933}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1700965145
@@ -8410,10 +8415,10 @@ RectTransform:
   - {fileID: 960742673}
   m_Father: {fileID: 1700965144}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 110.6, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 60.989697, y: -20.9665}
+  m_SizeDelta: {x: 110.6, y: 41.933}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1719517968
 MonoBehaviour:
@@ -8516,7 +8521,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1749031928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9415,9 +9420,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1352861560}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 236.98001, y: -84.44339}
   m_SizeDelta: {x: 148.18, y: 42.836}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1829728269
@@ -9973,9 +9978,9 @@ RectTransform:
   - {fileID: 955840091}
   m_Father: {fileID: 699248706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 385, y: -46.8205}
   m_SizeDelta: {x: 250, y: 83.641}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1909944329
@@ -10669,9 +10674,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1352861560}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 236.98001, y: -27.512697}
   m_SizeDelta: {x: 148.18, y: 42.837}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2094709428

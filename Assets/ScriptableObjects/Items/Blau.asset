@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Blau
   m_EditorClassIdentifier: 
   Id: 2
-  DisplayName: Blau
-  Icon: {fileID: 21300000, guid: 096ce8243287f9341aa62941d0d6baa3, type: 3}
+  DisplayName: Goggles
+  Icon: {fileID: -1211761389057137950, guid: 0dbe6588e43611f438d8a2dec7c7dff1, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 1
