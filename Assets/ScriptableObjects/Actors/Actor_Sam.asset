@@ -12,38 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d75e06c2391548c5ab5d457b3bb03cd2, type: 3}
   m_Name: Actor_Sam
   m_EditorClassIdentifier: 
-  id: sam
-  displayName: Sam
+  id: Actorlouise
+  displayName: Louise
   role: {fileID: 11400000, guid: 2e635c56c4f83e4439c9181453ab1e17, type: 2}
   portraitOverride: {fileID: 0}
   spiritPerDay: 1
   hireGoldCost: 0
-  happiness: 0.096
-  clumsiness: 0.934
+  happiness: 0.21
+  clumsiness: 0.311
   happinessThoughts:
-  - Sun's out, vibes out! (probably should work too.)
-  - Today's a good day to not set anything on fire.
-  - I could high-five a dragon right now.
+  - I will protect you at all cost.
+  - Hello young sir.
+  - I feel relieved to be outside again.
   clumsyThoughts:
-  - Oops. That was majestic in my head.
-  - If anyone asks, the floor attacked first.
-  - Graceful trip executed perfectly.
+  - Pardon me.
+  - My head is about to explode.
+  - That is not how you wield a gun.
+  idleThoughtIntervalMinSeconds: 17
+  idleThoughtIntervalMaxSeconds: 35
   happyIdleThoughts:
-  - Sun on my face, zero emergencies.
-  - Stretch break achieved. Productivity +1.
-  - Humming the victory theme just in case.
-  - Feels like a good day to exist.
-  - Coffee level optimal; morale stable.
-  - Admiring our gear like it's art.
-  - Plotting greatness, starting with snacks.
+  - I will protect you at all cost.
+  - 
+  - 
+  - Hello young sir.
+  - 
+  - 
+  - I feel relieved to be outside again.
   clumsyIdleThoughts:
-  - Tripped over my own shadow while standing still.
-  - If anyone asks, that noise was a feature.
-  - I swear the floor tilted first.
-  - Dropped nothing. Somehow still made a sound.
-  - "Practicing my stumble\u2014nailed it."
-  - Thought about moving, nearly fell anyway.
-  - "Hands in pockets: danger contained\u2026 probably."
+  - Pardon me.
+  - 
+  - 
+  - My head is about to explode.
+  - 
+  - 
+  - That is not how you wield a gun.
   happyTravelThoughts:
   - Road snacks packed, morale at 110%.
   - Maps, check. Dramatic cloak swirl, check.

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d161cd3382484cb9af43319f8d68695f, type: 3}
   m_Name: Route_HiddenMarket
   m_EditorClassIdentifier: 
-  id: hm
-  displayName: Hidden Market in the Woods
+  id: market
+  displayName: Hidden Market in the Alleyway
   travelDays: 0.7
   marketDays: 0.7
   roundTrip: 1

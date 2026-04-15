@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
   m_Name: Weiss
   m_EditorClassIdentifier: 
-  Id: weiss
-  DisplayName: "Wei\xDF"
+  Id: screw
+  DisplayName: 'Bronze screw '
   Icon: {fileID: 5091840924672322694, guid: 1efa7845ad675a54680e9f8e075b0d36, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
@@ -36,5 +36,5 @@ MonoBehaviour:
   researchLuckDescription: Research luck
   equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
     Speed bonuses multiply duration denominators; luck bonuses multiply chances.
-  price: 300
-  description: "Ein gef\xE4rbtes Item."
+  price: 5
+  description: Bronce screw, good for crafting and base support.

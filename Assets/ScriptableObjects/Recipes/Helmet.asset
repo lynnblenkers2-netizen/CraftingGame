@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3087be2c1caace4a9d7492d98ba2d5e, type: 3}
   m_Name: Helmet
   m_EditorClassIdentifier: 
-  displayName: Helmet
-  tier: 1
+  displayName: Bomb
+  tier: 25
   pattern:
   - item: {fileID: 11400000, guid: 83dd38eeb2932894887331d8edb21942, type: 2}
     amount: 1

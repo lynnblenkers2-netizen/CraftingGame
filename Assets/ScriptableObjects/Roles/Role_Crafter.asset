@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a54ad62ef59d40c2ae6d8f9ef1458c31, type: 3}
   m_Name: Role_Crafter
   m_EditorClassIdentifier: 
-  id: crafter
-  displayName: Crafter
+  id: defense
+  displayName: defense
   portrait: {fileID: 21300000, guid: 338fbb3dccf039942bf569605a759b30, type: 3}
-  canForage: 0
-  canSell: 1
-  canResearch: 0
-  canCraft: 1
+  canForage: 1
+  canSell: 0
+  canResearch: 1
+  canCraft: 0
+  canVisitTavern: 1
   efficiency: 1
   backpackSlots: 10

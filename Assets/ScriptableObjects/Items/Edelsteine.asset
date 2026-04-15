@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
   m_Name: Edelsteine
   m_EditorClassIdentifier: 
-  Id: 1
-  DisplayName: gold radio
-  Icon: {fileID: 3596014016990579304, guid: d86c53b1ed10c404da3558caf5b1571e, type: 3}
+  Id: gear
+  DisplayName: Gas mask
+  Icon: {fileID: 4538508980036187812, guid: 40a3db3cc55fce844bce258a2f207614, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 1
@@ -36,5 +36,5 @@ MonoBehaviour:
   researchLuckDescription: Research luck
   equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
     Speed bonuses multiply duration denominators; luck bonuses multiply chances.
-  price: 15
-  description: "Ein gef\xE4rbtes Item."
+  price: 25
+  description: Wear it in gassy outkept places and you won't suffocate.

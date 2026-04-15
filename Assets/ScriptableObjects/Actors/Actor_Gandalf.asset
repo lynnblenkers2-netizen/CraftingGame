@@ -12,38 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d75e06c2391548c5ab5d457b3bb03cd2, type: 3}
   m_Name: Actor_Gandalf
   m_EditorClassIdentifier: 
-  id: wizardgandalf
-  displayName: Gandalf
+  id: Actorluka
+  displayName: Luka
   role: {fileID: 11400000, guid: 4b1796ef023a6a24085785542b9ea38d, type: 2}
   portraitOverride: {fileID: 0}
   spiritPerDay: 5
   hireGoldCost: 100
-  happiness: 0.5
-  clumsiness: 0.2
+  happiness: 0.434
+  clumsiness: 0.551
   happinessThoughts:
-  - Sun's out, vibes out! (probably should work too.)
-  - Today's a good day to not set anything on fire.
-  - I could high-five a dragon right now.
+  - I found another screw!
+  - I have the best gun!
+  - Thank you for staying by my side.
   clumsyThoughts:
-  - Oops. That was majestic in my head.
-  - If anyone asks, the floor attacked first.
-  - Graceful trip executed perfectly.
+  - I think i broke my thumb.
+  - WAAAHH
+  - Oh! Everything turned off.
+  idleThoughtIntervalMinSeconds: 17
+  idleThoughtIntervalMaxSeconds: 35
   happyIdleThoughts:
-  - Sun on my face, zero emergencies.
-  - Stretch break achieved. Productivity +1.
-  - Humming the victory theme just in case.
-  - Feels like a good day to exist.
-  - Coffee level optimal; morale stable.
-  - Admiring our gear like it's art.
-  - Plotting greatness, starting with snacks.
+  - I found another screw!
+  - 
+  - 
+  - I have the best gun!
+  - 
+  - 
+  - Thank you for staying by my side.
   clumsyIdleThoughts:
-  - Tripped over my own shadow while standing still.
-  - If anyone asks, that noise was a feature.
-  - I swear the floor tilted first.
-  - Dropped nothing. Somehow still made a sound.
-  - "Practicing my stumble\u2014nailed it."
-  - Thought about moving, nearly fell anyway.
-  - "Hands in pockets: danger contained\u2026 probably."
+  - I think i broke my thumb.
+  - 
+  - 
+  - WAAAHH
+  - 
+  - 
+  - Oh! Everything turned off.
   happyTravelThoughts:
   - Road snacks packed, morale at 110%.
   - Maps, check. Dramatic cloak swirl, check.

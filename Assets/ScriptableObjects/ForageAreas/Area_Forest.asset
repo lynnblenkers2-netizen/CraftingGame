@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e829c63db504d76bd6c4ae6ed27f3c8, type: 3}
   m_Name: Area_Forest
   m_EditorClassIdentifier: 
-  id: forageForest
-  displayName: Forest
+  id: foragelab
+  displayName: laboratory
   travelDays: 0.1
   workDays: 0.2
   roundTrip: 1

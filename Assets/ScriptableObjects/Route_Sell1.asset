@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Route_Sell1
   m_EditorClassIdentifier: 
   id: sellroute1
-  displayName: Sell at Castle
+  displayName: sell at the hidden market
   travelDays: 0.5
   marketDays: 0.1
   roundTrip: 1

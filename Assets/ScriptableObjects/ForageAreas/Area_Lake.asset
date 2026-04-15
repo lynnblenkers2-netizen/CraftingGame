@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e829c63db504d76bd6c4ae6ed27f3c8, type: 3}
   m_Name: Area_Lake
   m_EditorClassIdentifier: 
-  id: foragelake
-  displayName: Lake
+  id: foragebasement
+  displayName: Basement
   travelDays: 0.1
   workDays: 1
   roundTrip: 1

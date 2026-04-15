@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3087be2c1caace4a9d7492d98ba2d5e, type: 3}
   m_Name: Orange
   m_EditorClassIdentifier: 
-  displayName: Orange
+  displayName: Golden lightbulb
+  tier: 20
   pattern:
   - item: {fileID: 11400000, guid: f68c9d3a687f6dc4f965428a814273a9, type: 2}
     amount: 1

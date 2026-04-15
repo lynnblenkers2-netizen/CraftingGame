@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518679dcc01c2644eac3f8d8a9a17ae6, type: 3}
   m_Name: TavernVisit_City1
   m_EditorClassIdentifier: 
-  id: LocalTavern
-  displayName: Local Tavern
+  id: Hidden market
+  displayName: Hidden market
   goldCost: 5
   visitDays: 0.3
   chanceForageLead: 0.25

@@ -14,6 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: legendaryArtifact
   DisplayName: Weird Gem
-  Icon: {fileID: 21300000, guid: fd3321e3383b0b846bfe44c8782ff70c, type: 3}
+  Icon: {fileID: -431154625067817594, guid: 368ce31451d0098429aa72aff118ac64, type: 3}
   MaxStack: 1
   producer: {fileID: 11400000, guid: 9e3a59137428ae94a8c0717215c3dc46, type: 2}
+  tier: 0
+  equippable: 0
+  equipmentBonuses:
+    travelSpeed: 0
+    craftingSpeed: 0
+    researchSpeed: 0
+    forageSpeed: 0
+    forageLuck: 0
+    tavernLuck: 0
+    researchLuck: 0
+  travelSpeedDescription: Travel speed
+  craftingSpeedDescription: Crafting speed
+  researchSpeedDescription: Research speed
+  forageSpeedDescription: Forage speed
+  forageLuckDescription: Forage luck
+  tavernLuckDescription: Tavern luck
+  researchLuckDescription: Research luck
+  equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
+    Speed bonuses multiply duration denominators; luck bonuses multiply chances.
+  price: 0
+  description: 

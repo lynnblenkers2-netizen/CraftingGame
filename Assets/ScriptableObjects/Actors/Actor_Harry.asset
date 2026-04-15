@@ -12,22 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d75e06c2391548c5ab5d457b3bb03cd2, type: 3}
   m_Name: Actor_Harry
   m_EditorClassIdentifier: 
-  id: harry
-  displayName: Harry Potter
+  id: Actorlouise
+  displayName: Louise
   role: {fileID: 11400000, guid: 4b1796ef023a6a24085785542b9ea38d, type: 2}
   portraitOverride: {fileID: 21300000, guid: 5663917f2c6b57548a5516484f83d177, type: 3}
   spiritPerDay: 3
   hireGoldCost: 100
-  happiness: 0.5
-  clumsiness: 0.2
+  happiness: 0.295
+  clumsiness: 0.338
   happinessThoughts:
-  - Sun's out, vibes out! (probably should work too.)
-  - Today's a good day to not set anything on fire.
-  - I could high-five a dragon right now.
+  - I will protect you at all cost.
+  - Hello young sir.
+  - I feel relieved to be outside again.
   clumsyThoughts:
-  - Oops. That was majestic in my head.
-  - If anyone asks, the floor attacked first.
-  - Graceful trip executed perfectly.
+  - Pardon me.
+  - My head is about to explode.
+  - That is not how you wield a gun.
+  idleThoughtIntervalMinSeconds: 17
+  idleThoughtIntervalMaxSeconds: 35
   happyIdleThoughts:
   - Sun on my face, zero emergencies.
   - Stretch break achieved. Productivity +1.
