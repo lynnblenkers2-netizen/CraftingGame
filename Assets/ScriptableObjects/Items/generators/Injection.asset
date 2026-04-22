@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
-  m_Name: Helmet
+  m_Name: Injection
   m_EditorClassIdentifier: 
-  Id: bomb
-  DisplayName: Self engineerd  bomb
-  Icon: {fileID: 1176018324246390490, guid: 7ed7e397928b3394797a8be257d6eae9, type: 3}
+  Id: Injection
+  DisplayName: HP injection
+  Icon: {fileID: -603184555498200413, guid: a5309deec8159e044900e898f9b6a070, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 1
-  equippable: 1
+  equippable: 0
   equipmentBonuses:
     travelSpeed: 0
     craftingSpeed: 0
     researchSpeed: 0
     forageSpeed: 0
     forageLuck: 0
-    tavernLuck: 0.15
+    tavernLuck: 0
     researchLuck: 0
   travelSpeedDescription: Travel speed
   craftingSpeedDescription: Crafting speed
@@ -36,5 +36,6 @@ MonoBehaviour:
   researchLuckDescription: Research luck
   equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
     Speed bonuses multiply duration denominators; luck bonuses multiply chances.
-  price: 0
-  description: Self made, highly dangerous, throw it quick.
+  price: 25
+  description: Use to inject blood and goldpowder into your veins, you'll get half
+    full HP, but also kinda hurts.

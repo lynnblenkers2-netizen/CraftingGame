@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
-  m_Name: Lila
-  m_EditorClassIdentifier: 
-  Id: gear
-  DisplayName: silver gear
-  Icon: {fileID: 3061082696847402329, guid: e5543cd5b94129b49be7a9cccca3c802, type: 3}
+  m_Name: Golden Radio
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  Id: radio
+  DisplayName: Golden radio
+  Icon: {fileID: 3596014016990579304, guid: d86c53b1ed10c404da3558caf5b1571e, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
-  tier: 2
-  equippable: 0
+  tier: 3
+  equippable: 1
   equipmentBonuses:
     travelSpeed: 0
     craftingSpeed: 0
@@ -36,5 +36,6 @@ MonoBehaviour:
   researchLuckDescription: Research luck
   equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
     Speed bonuses multiply duration denominators; luck bonuses multiply chances.
-  price: 10
-  description: Great for crafting and big machinery.
+  price: 45
+  description: High quality radio, that emitts out golden powder, when a new song/podcast
+    starts.

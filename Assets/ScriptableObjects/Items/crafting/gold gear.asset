@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
-  m_Name: Blau
-  m_EditorClassIdentifier: 
-  Id: weapon
-  DisplayName: Crowbar
-  Icon: {fileID: 3201962233253057923, guid: a790ea246643bfe44b186956f7acfc9e, type: 3}
+  m_Name: gold gear
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  Id: gear
+  DisplayName: Gold gear
+  Icon: {fileID: 6188423851510401460, guid: 0bf6afbdeeb5cbb44b07ff851863de9d, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
-  tier: 1
+  tier: 3
   equippable: 0
   equipmentBonuses:
     travelSpeed: 0
@@ -36,5 +36,5 @@ MonoBehaviour:
   researchLuckDescription: Research luck
   equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
     Speed bonuses multiply duration denominators; luck bonuses multiply chances.
-  price: 0
-  description: You found it in some alley, was already bloody.
+  price: 15
+  description: Great for crafting and big machinery, higher quality.

@@ -10,12 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3087be2c1caace4a9d7492d98ba2d5e, type: 3}
-  m_Name: Helmet
+  m_Name: Gun
   m_EditorClassIdentifier: 
-  displayName: Bomb
-  tier: 25
+  displayName: Gun
+  tier: 30
   pattern:
-  - item: {fileID: 11400000, guid: 83dd38eeb2932894887331d8edb21942, type: 2}
+  - item: {fileID: 0}
+    amount: 0
+  - item: {fileID: 0}
+    amount: 0
+  - item: {fileID: 0}
+    amount: 0
+  - item: {fileID: 0}
+    amount: 0
+  - item: {fileID: 11400000, guid: 9cba98a021e7980448fe5d9836b85c23, type: 2}
     amount: 1
   - item: {fileID: 11400000, guid: 83dd38eeb2932894887331d8edb21942, type: 2}
     amount: 1
@@ -23,29 +31,21 @@ MonoBehaviour:
     amount: 1
   - item: {fileID: 11400000, guid: 83dd38eeb2932894887331d8edb21942, type: 2}
     amount: 1
-  - item: {fileID: 11400000, guid: 83dd38eeb2932894887331d8edb21942, type: 2}
+  - item: {fileID: 11400000, guid: 1d4074bf755a9704bbc26b4d8b923349, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: fabfc8a0a5d3f244c8cd2598cb7cc4bc, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: fabfc8a0a5d3f244c8cd2598cb7cc4bc, type: 2}
     amount: 1
   - item: {fileID: 0}
     amount: 0
   - item: {fileID: 0}
     amount: 0
-  - item: {fileID: 11400000, guid: 83dd38eeb2932894887331d8edb21942, type: 2}
-    amount: 1
-  - item: {fileID: 0}
-    amount: 1
   - item: {fileID: 0}
     amount: 0
   - item: {fileID: 0}
     amount: 0
   - item: {fileID: 0}
     amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  outputItem: {fileID: 11400000, guid: b1fe30c6ea8a82641bcc481c2e11c059, type: 2}
-  outputAmount: 1
+  outputItem: {fileID: 11400000, guid: 6dc621f1d67613347bfa1ec28c4f7dd3, type: 2}
+  outputAmount: 3

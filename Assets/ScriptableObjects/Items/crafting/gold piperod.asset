@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
-  m_Name: Edelsteine
-  m_EditorClassIdentifier: 
-  Id: gear
-  DisplayName: Gas mask
-  Icon: {fileID: 4538508980036187812, guid: 40a3db3cc55fce844bce258a2f207614, type: 3}
+  m_Name: gold piperod
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  Id: piperod
+  DisplayName: Gold piperod
+  Icon: {fileID: 8176360152455870, guid: 080b40617e8d124488b9fb6952051805, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
-  tier: 1
+  tier: 3
   equippable: 0
   equipmentBonuses:
     travelSpeed: 0
@@ -36,5 +36,5 @@ MonoBehaviour:
   researchLuckDescription: Research luck
   equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
     Speed bonuses multiply duration denominators; luck bonuses multiply chances.
-  price: 25
-  description: Wear it in gassy outkept places and you won't suffocate.
+  price: 15
+  description: Great for taller, long stability, pretty and shiny.

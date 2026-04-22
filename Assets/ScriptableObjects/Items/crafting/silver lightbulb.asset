@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
-  m_Name: Orange
-  m_EditorClassIdentifier: 
+  m_Name: silver lightbulb
+  m_EditorClassIdentifier: Assembly-CSharp::Item
   Id: lightbulb
-  DisplayName: Golden lightbulb
-  Icon: {fileID: -6833541923527212562, guid: e03ffdf9d38c0b94a87cf722a1980d98, type: 3}
+  DisplayName: Silver lightbulb
+  Icon: {fileID: 5184133735267616746, guid: 87f7678a23ed7384382f561099c805da, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 2
@@ -36,5 +36,5 @@ MonoBehaviour:
   researchLuckDescription: Research luck
   equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
     Speed bonuses multiply duration denominators; luck bonuses multiply chances.
-  price: 20
+  price: 10
   description: Ideal for decoration and lightpower.

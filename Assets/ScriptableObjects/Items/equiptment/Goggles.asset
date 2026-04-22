@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
-  m_Name: Weiss
-  m_EditorClassIdentifier: 
-  Id: screw
-  DisplayName: 'Bronze screw '
-  Icon: {fileID: 5091840924672322694, guid: 1efa7845ad675a54680e9f8e075b0d36, type: 3}
+  m_Name: Goggles
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  Id: goggles
+  DisplayName: Working goggles
+  Icon: {fileID: -1211761389057137950, guid: 0dbe6588e43611f438d8a2dec7c7dff1, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
-  tier: 3
-  equippable: 0
+  tier: 1
+  equippable: 1
   equipmentBonuses:
     travelSpeed: 0
     craftingSpeed: 0
@@ -36,5 +36,5 @@ MonoBehaviour:
   researchLuckDescription: Research luck
   equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
     Speed bonuses multiply duration denominators; luck bonuses multiply chances.
-  price: 5
-  description: Bronce screw, good for crafting and base support.
+  price: 10
+  description: Your working goggles, suprisingly cheap and and pretty stable.

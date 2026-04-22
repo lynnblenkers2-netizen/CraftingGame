@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
-  m_Name: Gruen
-  m_EditorClassIdentifier: 
-  Id: gun
-  DisplayName: Self engineerd gun
-  Icon: {fileID: -8472422446845594683, guid: 8196d57ebf2e550409345a0c49d3e2cb, type: 3}
+  m_Name: silver piperod
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  Id: piperod
+  DisplayName: Silver piperod
+  Icon: {fileID: 4014588906062118216, guid: e7cd640b88bf29a41a3d7cbd8173cf30, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 2
@@ -36,5 +36,5 @@ MonoBehaviour:
   researchLuckDescription: Research luck
   equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
     Speed bonuses multiply duration denominators; luck bonuses multiply chances.
-  price: 0
-  description: Self made, good defense but needs alot of restarts.
+  price: 10
+  description: Great for taller, long stability.

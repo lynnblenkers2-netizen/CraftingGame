@@ -15,7 +15,7 @@ MonoBehaviour:
   id: skill1
   displayName: Besser Craften
   description: "Erh\xF6ht die Chance auf doppelten Output beim Craften"
-  icon: {fileID: 21300000, guid: 4579304ceb788b640b9e0deab31061c9, type: 3}
+  icon: {fileID: 9094224949921694808, guid: 5bd7340ea5bef7a49bce4230e4ee35a3, type: 3}
   cost: 1
   prerequisites: []
   canvasPosition: {x: 0, y: -70}
